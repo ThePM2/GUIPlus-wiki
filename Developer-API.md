@@ -322,10 +322,10 @@ softdepend: [GUIPlus]
 
 ---
 
-> **Tip:** Looking for YAML-based configuration instead of the Java API? Most GUIPlus features can be achieved entirely through YAML files. See [Creating GUIs](Creating-GUIs) for the full YAML reference.
+> **Tip:** Looking for YAML-based configuration instead of the Java API? Most GUIPlus features can be achieved entirely through YAML files. See [Creating GUIs](Creating-GUIs.md) for the full YAML reference.
 
 ---
 
 | ← Previous |
 |:---|
-| [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting) |
+| [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting.md) |

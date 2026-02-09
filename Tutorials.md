@@ -671,12 +671,12 @@ For a ban with a custom reason, you could use a chat fetcher approach:
 
 ## 🚀 What's Next?
 
-- 📦 Browse [Premade Configurations](Premade-Configurations) for ready-to-use GUI templates
-- 🧩 Learn about [Plugin Integrations](Plugin-Integrations) for connecting with other plugins
-- 💡 Read [Tips & Best Practices](Tips-and-Best-Practices) for optimization advice
+- 📦 Browse [Premade Configurations](Premade-Configurations.md) for ready-to-use GUI templates
+- 🧩 Learn about [Plugin Integrations](Plugin-Integrations.md) for connecting with other plugins
+- 💡 Read [Tips & Best Practices](Tips-and-Best-Practices.md) for optimization advice
 
 ---
 
 | ← Previous | Next → |
 |:---|---:|
-| [**DeluxeMenus Converter**](DeluxeMenus-Converter) | [**Premade Configurations**](Premade-Configurations) |
+| [**DeluxeMenus Converter**](DeluxeMenus-Converter.md) | [**Premade Configurations**](Premade-Configurations.md) |

@@ -588,4 +588,4 @@ When adapting these templates:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Tutorials**](Tutorials) | [**Tips & Best Practices**](Tips-and-Best-Practices) |
+| [**Tutorials**](Tutorials.md) | [**Tips & Best Practices**](Tips-and-Best-Practices.md) |

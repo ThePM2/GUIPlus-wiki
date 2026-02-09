@@ -75,4 +75,4 @@ Players can then use `/shop` to open the GUI directly. The `guiplus.gui.open.oth
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Getting Started**](Getting-Started) | [**Configuration**](Configuration) |
+| [**Getting Started**](Getting-Started.md) | [**Configuration**](Configuration.md) |

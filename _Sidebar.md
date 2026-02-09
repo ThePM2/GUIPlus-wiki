@@ -1,37 +1,37 @@
-### [🎨 GUIPlus](Home)
+### [🎨 GUIPlus](Home.md)
 
 ---
 
 **⚙ GETTING STARTED**
-- [🏠 Home](Home)
-- [🚀 Getting Started](Getting-Started)
-- [📋 Commands & Permissions](Commands-and-Permissions)
-- [⚙ Configuration](Configuration)
+- [🏠 Home](Home.md)
+- [🚀 Getting Started](Getting-Started.md)
+- [📋 Commands & Permissions](Commands-and-Permissions.md)
+- [⚙ Configuration](Configuration.md)
 
 **🎨 CREATING GUIS**
-- [🖼 Creating GUIs](Creating-GUIs)
-- [📄 Scenes](Scenes)
-- [🖱 Click Events](Click-Events)
-- [✅ Conditions](Conditions)
+- [🖼 Creating GUIs](Creating-GUIs.md)
+- [📄 Scenes](Scenes.md)
+- [🖱 Click Events](Click-Events.md)
+- [✅ Conditions](Conditions.md)
 
 **💬 INTERACTIVE**
-- [💬 Chat Fetcher](Chat-Fetcher)
-- [💾 Player Data](Player-Data)
-- [💀 Custom Heads & Skulls](Custom-Heads-and-Skulls)
+- [💬 Chat Fetcher](Chat-Fetcher.md)
+- [💾 Player Data](Player-Data.md)
+- [💀 Custom Heads & Skulls](Custom-Heads-and-Skulls.md)
 
 **🔌 INTEGRATIONS**
-- [🔗 PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders)
-- [🌐 BungeeCord Support](BungeeCord-Support)
-- [🧩 Plugin Integrations](Plugin-Integrations)
-- [🔄 DeluxeMenus Converter](DeluxeMenus-Converter)
+- [🔗 PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders.md)
+- [🌐 BungeeCord Support](BungeeCord-Support.md)
+- [🧩 Plugin Integrations](Plugin-Integrations.md)
+- [🔄 DeluxeMenus Converter](DeluxeMenus-Converter.md)
 
 **📖 TUTORIALS & RESOURCES**
-- [📖 Tutorials](Tutorials)
-- [📦 Premade Configurations](Premade-Configurations)
-- [💡 Tips & Best Practices](Tips-and-Best-Practices)
+- [📖 Tutorials](Tutorials.md)
+- [📦 Premade Configurations](Premade-Configurations.md)
+- [💡 Tips & Best Practices](Tips-and-Best-Practices.md)
 
 **❓ HELP**
-- [❓ FAQ & Troubleshooting](FAQ-and-Troubleshooting)
+- [❓ FAQ & Troubleshooting](FAQ-and-Troubleshooting.md)
 
 **💻 FOR DEVELOPERS**
-- [💻 Developer API](Developer-API)
+- [💻 Developer API](Developer-API.md)

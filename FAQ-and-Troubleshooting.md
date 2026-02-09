@@ -13,7 +13,7 @@
 There are two ways:
 
 1. **In-Game Editor:** Run `/gui` to open the management menu, then create a new GUI through the editor interface.
-2. **YAML File:** Create a new `.yml` file in `plugins/GUIPlus/CustomGuis/` and define your GUI structure. See [Creating GUIs](Creating-GUIs).
+2. **YAML File:** Create a new `.yml` file in `plugins/GUIPlus/CustomGuis/` and define your GUI structure. See [Creating GUIs](Creating-GUIs.md).
 
 ### How do I reload my changes?
 
@@ -21,11 +21,11 @@ Run `/gui reload` to reload all GUI configurations and plugin settings. This doe
 
 ### Can I use PlaceholderAPI placeholders?
 
-Yes. GUIPlus fully supports PlaceholderAPI. Any PAPI placeholder can be used in item names, lore, click event parameters, and condition values. See [PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders).
+Yes. GUIPlus fully supports PlaceholderAPI. Any PAPI placeholder can be used in item names, lore, click event parameters, and condition values. See [PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders.md).
 
 ### How do I make items visible only to certain players?
 
-Use [conditions](Conditions) on items. For example, to show an item only to players with a specific permission:
+Use [conditions](Conditions.md) on items. For example, to show an item only to players with a specific permission:
 
 ```yaml
 conditions:
@@ -36,15 +36,15 @@ conditionFailMessage: §cVIP only!
 
 ### How do I create a multi-page menu?
 
-Use [scenes](Scenes). Each scene acts as a separate page, and players navigate between them using `next-scene-click` and `previous-scene-click` events.
+Use [scenes](Scenes.md). Each scene acts as a separate page, and players navigate between them using `next-scene-click` and `previous-scene-click` events.
 
 ### Can I use GUIPlus with BungeeCord/Velocity?
 
-Yes. Use the `server-click-event` to send players to other servers. See [BungeeCord Support](BungeeCord-Support).
+Yes. Use the `server-click-event` to send players to other servers. See [BungeeCord Support](BungeeCord-Support.md).
 
 ### How do I store per-player data?
 
-Use the `save-player-info` click event to save data and `%GUIPlus_player_info_<field>%` to retrieve it. See [Player Data](Player-Data).
+Use the `save-player-info` click event to save data and `%GUIPlus_player_info_<field>%` to retrieve it. See [Player Data](Player-Data.md).
 
 ### Can I open GUIs from other plugins?
 
@@ -56,7 +56,7 @@ Use `/gui open <name> <player>` (requires `guiplus.gui.open` permission) or `/gu
 
 ### How do I convert from DeluxeMenus?
 
-Place your DeluxeMenus files in `plugins/GUIPlus/DeluxeMenus/` and restart. See [DeluxeMenus Converter](DeluxeMenus-Converter).
+Place your DeluxeMenus files in `plugins/GUIPlus/DeluxeMenus/` and restart. See [DeluxeMenus Converter](DeluxeMenus-Converter.md).
 
 ### How do I add sound effects to buttons?
 
@@ -72,7 +72,7 @@ click-events:
     message: §aButton clicked!
 ```
 
-See [Click Events — Sound](Click-Events#sound) for all options.
+See [Click Events — Sound](Click-Events.md#sound) for all options.
 
 ### How do I make a left-click / right-click do different things?
 
@@ -92,11 +92,11 @@ Valid click types: `LEFT`, `RIGHT`, `MIDDLE`, `SHIFT_LEFT`, `SHIFT_RIGHT`, `NONE
 
 ### Can I use GUIPlus with ItemsAdder or Oraxen?
 
-Yes. Use custom model data (`item-custom-model-data`) for custom item textures, and console commands to give custom items. Font image placeholders work in item lore if the respective PAPI expansion is installed. See [Plugin Integrations](Plugin-Integrations) for details.
+Yes. Use custom model data (`item-custom-model-data`) for custom item textures, and console commands to give custom items. Font image placeholders work in item lore if the respective PAPI expansion is installed. See [Plugin Integrations](Plugin-Integrations.md) for details.
 
 ### How do I open a GUI from an NPC?
 
-If using Citizens, add a command to the NPC: `/npc command add -p gui open <name>`. Any NPC plugin that supports running commands on interaction works similarly. See [Plugin Integrations](Plugin-Integrations).
+If using Citizens, add a command to the NPC: `/npc command add -p gui open <name>`. Any NPC plugin that supports running commands on interaction works similarly. See [Plugin Integrations](Plugin-Integrations.md).
 
 ### How do I add a cooldown to a button?
 
@@ -109,11 +109,11 @@ conditions:
     id: my-cooldown
 ```
 
-This prevents the item from being clicked more than once per 60 seconds. See [Conditions — Cooldown](Conditions#cooldown).
+This prevents the item from being clicked more than once per 60 seconds. See [Conditions — Cooldown](Conditions.md#cooldown).
 
 ### Are there premade GUI templates I can use?
 
-Yes. See [Premade Configurations](Premade-Configurations) for ready-to-use templates including server rules, gamemode selectors, social links menus, daily rewards, and more.
+Yes. See [Premade Configurations](Premade-Configurations.md) for ready-to-use templates including server rules, gamemode selectors, social links menus, daily rewards, and more.
 
 ---
 
@@ -141,7 +141,7 @@ Yes. See [Premade Configurations](Premade-Configurations) for ready-to-use templ
 
 ### Click events not working
 
-- Ensure the click event ID is correct (see [Click Events](Click-Events))
+- Ensure the click event ID is correct (see [Click Events](Click-Events.md))
 - Check if there's a `clickType` restriction that doesn't match how the player is clicking
 - If using `has-money` or other economy events, verify Vault and an economy plugin are installed
 - Check the console for error messages when clicking
@@ -176,7 +176,7 @@ Yes. See [Premade Configurations](Premade-Configurations) for ready-to-use templ
 - Reduce the number of placeholders in item lore (each is evaluated every second)
 - Avoid using many open GUIs simultaneously with dynamic content
 - Keep individual GUIs focused — split large menus into separate GUIs linked by commands
-- See [Tips & Best Practices — Performance](Tips-and-Best-Practices#performance) for detailed optimization guidance
+- See [Tips & Best Practices — Performance](Tips-and-Best-Practices.md#performance) for detailed optimization guidance
 
 ### Economy events not working (money-give, money-remove, has-money)
 
@@ -213,11 +213,11 @@ If you're still having issues:
 1. Enable `show-stacktrace: true` in `config.yml` for detailed error messages
 2. Enable `debug.enabled: true` for verbose logging
 3. Check the console output after reproducing the issue
-4. Review [Tips & Best Practices](Tips-and-Best-Practices) for common pitfalls
+4. Review [Tips & Best Practices](Tips-and-Best-Practices.md) for common pitfalls
 5. Join the plugin's Discord server for community support
 
 ---
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Tips & Best Practices**](Tips-and-Best-Practices) | [**Developer API**](Developer-API) |
+| [**Tips & Best Practices**](Tips-and-Best-Practices.md) | [**Developer API**](Developer-API.md) |

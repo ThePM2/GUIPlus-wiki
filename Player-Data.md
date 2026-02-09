@@ -185,4 +185,4 @@ scenes:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Chat Fetcher**](Chat-Fetcher) | [**Custom Heads & Skulls**](Custom-Heads-and-Skulls) |
+| [**Chat Fetcher**](Chat-Fetcher.md) | [**Custom Heads & Skulls**](Custom-Heads-and-Skulls.md) |

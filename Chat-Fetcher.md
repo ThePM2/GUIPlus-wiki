@@ -154,4 +154,4 @@ This example creates a deposit feature where players type an amount, it validate
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Conditions**](Conditions) | [**Player Data**](Player-Data) |
+| [**Conditions**](Conditions.md) | [**Player Data**](Player-Data.md) |

@@ -106,4 +106,4 @@ scenes:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Player Data**](Player-Data) | [**PlaceholderAPI Placeholders**](PlaceholderAPI-Placeholders) |
+| [**Player Data**](Player-Data.md) | [**PlaceholderAPI Placeholders**](PlaceholderAPI-Placeholders.md) |

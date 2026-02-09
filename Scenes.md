@@ -190,4 +190,4 @@ scenes:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Creating GUIs**](Creating-GUIs) | [**Click Events**](Click-Events) |
+| [**Creating GUIs**](Creating-GUIs.md) | [**Click Events**](Click-Events.md) |

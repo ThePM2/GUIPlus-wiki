@@ -263,7 +263,7 @@ click-events:
         message: &aYou typed %input%!
 ```
 
-See [Chat Fetcher](Chat-Fetcher) for full details.
+See [Chat Fetcher](Chat-Fetcher.md) for full details.
 
 ---
 
@@ -343,7 +343,7 @@ click-events:
 
 Math operators supported: `+`, `-`, `*`, `/`, `^` (exponentiation), and functions `sqrt()`, `sin()`, `cos()`, `tan()`. Parentheses are supported for grouping.
 
-See [Player Data](Player-Data) for full details.
+See [Player Data](Player-Data.md) for full details.
 
 ---
 
@@ -446,7 +446,7 @@ click-events:
   next-scene-click: {}
 ```
 
-See [Scenes](Scenes) for multi-page navigation.
+See [Scenes](Scenes.md) for multi-page navigation.
 
 ---
 
@@ -513,7 +513,7 @@ click-events:
     server: lobby
 ```
 
-See [BungeeCord Support](BungeeCord-Support).
+See [BungeeCord Support](BungeeCord-Support.md).
 
 ---
 
@@ -564,10 +564,10 @@ click-events:
 
 Some click events can run when the scene opens instead of on click. The `glow-at-item` event does this automatically. For other events, `openEvent` can be configured through the in-game editor — it is stored in the item's compressed data rather than as a direct YAML field.
 
-Scenes also support their own `open-events` section — see [Scenes](Scenes) for details.
+Scenes also support their own `open-events` section — see [Scenes](Scenes.md) for details.
 
 ---
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Scenes**](Scenes) | [**Conditions**](Conditions) |
+| [**Scenes**](Scenes.md) | [**Conditions**](Conditions.md) |

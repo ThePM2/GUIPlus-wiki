@@ -361,4 +361,4 @@ conditions:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Premade Configurations**](Premade-Configurations) | [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting) |
+| [**Premade Configurations**](Premade-Configurations.md) | [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting.md) |

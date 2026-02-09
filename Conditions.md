@@ -298,4 +298,4 @@ Sorting groups allow items to serve as fallbacks for each other. If the primary 
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Click Events**](Click-Events) | [**Chat Fetcher**](Chat-Fetcher) |
+| [**Click Events**](Click-Events.md) | [**Chat Fetcher**](Chat-Fetcher.md) |

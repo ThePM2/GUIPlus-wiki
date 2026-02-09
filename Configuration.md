@@ -170,4 +170,4 @@ Customize the main plugin command name, its aliases, and description. You can al
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Commands & Permissions**](Commands-and-Permissions) | [**Creating GUIs**](Creating-GUIs) |
+| [**Commands & Permissions**](Commands-and-Permissions.md) | [**Creating GUIs**](Creating-GUIs.md) |

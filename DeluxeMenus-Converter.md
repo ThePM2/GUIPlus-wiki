@@ -55,4 +55,4 @@ Complex DeluxeMenus features that have no direct equivalent in GUIPlus may need 
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Plugin Integrations**](Plugin-Integrations) | [**Tutorials**](Tutorials) |
+| [**Plugin Integrations**](Plugin-Integrations.md) | [**Tutorials**](Tutorials.md) |

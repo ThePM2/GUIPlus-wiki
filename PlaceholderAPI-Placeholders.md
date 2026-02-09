@@ -50,7 +50,7 @@ GUIPlus registers the following custom placeholders under the identifier `GUIPlu
 
 ## 💾 Player Info Placeholder
 
-The `%GUIPlus_player_info_<field>%` placeholder is the most commonly used GUIPlus placeholder. It retrieves data saved via the [Save Player Info click event](Click-Events#save-player-info).
+The `%GUIPlus_player_info_<field>%` placeholder is the most commonly used GUIPlus placeholder. It retrieves data saved via the [Save Player Info click event](Click-Events.md#save-player-info).
 
 ```yaml
 # Saving a value
@@ -65,13 +65,13 @@ item-lore:
 
 If the field has not been set for a player, the placeholder returns the string `null`.
 
-See [Player Data](Player-Data) for full details on saving and retrieving data.
+See [Player Data](Player-Data.md) for full details on saving and retrieving data.
 
 ## ⭐ Special Placeholders
 
 ### `%input%`
 
-Available inside [Chat Fetcher](Chat-Fetcher) nested click events and conditions. Contains the text the player typed in chat.
+Available inside [Chat Fetcher](Chat-Fetcher.md) nested click events and conditions. Contains the text the player typed in chat.
 
 ```yaml
 click-events:
@@ -92,7 +92,7 @@ The name of the player who executed the action. Useful in player picker click ev
 
 ### `%self_base64%`
 
-Used in skull textures to dynamically render the viewing player's skin. See [Custom Heads](Custom-Heads-and-Skulls).
+Used in skull textures to dynamically render the viewing player's skin. See [Custom Heads](Custom-Heads-and-Skulls.md).
 
 ## 🧩 Combining with Other PAPI Plugins
 
@@ -111,4 +111,4 @@ item-lore:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Custom Heads & Skulls**](Custom-Heads-and-Skulls) | [**BungeeCord Support**](BungeeCord-Support) |
+| [**Custom Heads & Skulls**](Custom-Heads-and-Skulls.md) | [**BungeeCord Support**](BungeeCord-Support.md) |

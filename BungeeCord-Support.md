@@ -104,4 +104,4 @@ click-events:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**PlaceholderAPI Placeholders**](PlaceholderAPI-Placeholders) | [**Plugin Integrations**](Plugin-Integrations) |
+| [**PlaceholderAPI Placeholders**](PlaceholderAPI-Placeholders.md) | [**Plugin Integrations**](Plugin-Integrations.md) |

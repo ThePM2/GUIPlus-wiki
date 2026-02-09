@@ -8,7 +8,7 @@
 
 GUIs in GUIPlus are defined as YAML files inside the `plugins/GUIPlus/CustomGuis/` folder. Each file represents one GUI menu.
 
-> **Tip:** You can also create GUIs through the in-game editor with `/gui`. The editor generates the YAML for you. See [Getting Started](Getting-Started) for the editor workflow.
+> **Tip:** You can also create GUIs through the in-game editor with `/gui`. The editor generates the YAML for you. See [Getting Started](Getting-Started.md) for the editor workflow.
 
 ## 📐 GUI Structure
 
@@ -90,16 +90,16 @@ Each item in a scene supports the following properties:
 | `item-flags` | List | Bukkit ItemFlags: `HIDE_ENCHANTS`, `HIDE_ATTRIBUTES`, `HIDE_UNBREAKABLE`, etc. |
 | `unbreakable` | Boolean | Whether the item should be unbreakable |
 | `item-enchants` | Map | Enchantments to apply, e.g. `DURABILITY: 1` |
-| `skullBase64` | String | Base64-encoded texture for `PLAYER_HEAD` items (see [Custom Heads](Custom-Heads-and-Skulls)) |
+| `skullBase64` | String | Base64-encoded texture for `PLAYER_HEAD` items (see [Custom Heads](Custom-Heads-and-Skulls.md)) |
 | `item-custom-model-data` | Integer | Custom model data value for resource packs |
 | `item-model` | String | Item model key as a namespaced ID (Minecraft 1.21.2+ only) |
 | `leather-color` | Integer | Leather armor color as an ARGB integer (only for leather armor items) |
 | `item-attributes` | Map | Attribute modifiers (see [Item Attributes](#item-attributes) below) |
-| `click-events` | Map | Actions triggered on click (see [Click Events](Click-Events)) |
-| `conditions` | Map | Conditions for showing this item (see [Conditions](Conditions)) |
+| `click-events` | Map | Actions triggered on click (see [Click Events](Click-Events.md)) |
+| `conditions` | Map | Conditions for showing this item (see [Conditions](Conditions.md)) |
 | `conditionFailMessage` | String | Message shown when conditions are not met |
 
-> **Note:** The `sorting-group` property is managed through the in-game editor and is stored in the item's compressed data. It is not a hand-writable YAML field. See [Conditions — Sorting Groups](Conditions#sorting-groups) for details.
+> **Note:** The `sorting-group` property is managed through the in-game editor and is stored in the item's compressed data. It is not a hand-writable YAML field. See [Conditions — Sorting Groups](Conditions.md#sorting-groups) for details.
 
 ## ⚔ Item Attributes
 
@@ -250,4 +250,4 @@ scenes:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Configuration**](Configuration) | [**Scenes**](Scenes) |
+| [**Configuration**](Configuration.md) | [**Scenes**](Scenes.md) |

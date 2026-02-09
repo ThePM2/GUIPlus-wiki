@@ -289,7 +289,7 @@ item-lore:
 
 [HeadDatabase](https://www.spigotmc.org/resources/head-database.14280/) is a soft dependency of GUIPlus. When installed, it provides access to thousands of decorative heads.
 
-GUIPlus automatically integrates with HeadDatabase when it's present. You can also use Base64 textures directly — see [Custom Heads & Skulls](Custom-Heads-and-Skulls).
+GUIPlus automatically integrates with HeadDatabase when it's present. You can also use Base64 textures directly — see [Custom Heads & Skulls](Custom-Heads-and-Skulls.md).
 
 ---
 
@@ -325,7 +325,7 @@ conditions:
 
 **Used for:** Displaying cross-server data in BungeeCord/Velocity networks
 
-[PAPIProxyBridge](https://www.spigotmc.org/resources/papiproxybridge.108415/) lets you use PlaceholderAPI across your network. Combine with [BungeeCord Support](BungeeCord-Support) for server selectors that show player counts.
+[PAPIProxyBridge](https://www.spigotmc.org/resources/papiproxybridge.108415/) lets you use PlaceholderAPI across your network. Combine with [BungeeCord Support](BungeeCord-Support.md) for server selectors that show player counts.
 
 ```yaml
 item-name: §aSurvival
@@ -366,4 +366,4 @@ click-events:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**BungeeCord Support**](BungeeCord-Support) | [**DeluxeMenus Converter**](DeluxeMenus-Converter) |
+| [**BungeeCord Support**](BungeeCord-Support.md) | [**DeluxeMenus Converter**](DeluxeMenus-Converter.md) |

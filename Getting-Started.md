@@ -93,13 +93,13 @@ Then reload with `/gui reload` and open it with `/gui open mygui` or `/mymenu`.
 
 ## 🚀 Next Steps
 
-- 🖼 Learn about the full [GUI structure](Creating-GUIs)
-- 🖱 Explore all [click events](Click-Events)
-- ✅ Add logic with [conditions](Conditions)
-- 🔗 Use dynamic content with [PlaceholderAPI](PlaceholderAPI-Placeholders)
+- 🖼 Learn about the full [GUI structure](Creating-GUIs.md)
+- 🖱 Explore all [click events](Click-Events.md)
+- ✅ Add logic with [conditions](Conditions.md)
+- 🔗 Use dynamic content with [PlaceholderAPI](PlaceholderAPI-Placeholders.md)
 
 ---
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Home**](Home) | [**Commands & Permissions**](Commands-and-Permissions) |
+| [**Home**](Home.md) | [**Commands & Permissions**](Commands-and-Permissions.md) |
