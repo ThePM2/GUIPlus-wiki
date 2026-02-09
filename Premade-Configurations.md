@@ -588,4 +588,4 @@ When adapting these templates:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Plugin Integrations**](Plugin-Integrations) | [**Tips & Best Practices**](Tips-and-Best-Practices) |
+| [**Tutorials**](Tutorials) | [**Tips & Best Practices**](Tips-and-Best-Practices) |

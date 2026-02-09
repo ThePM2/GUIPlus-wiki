@@ -366,4 +366,4 @@ click-events:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Tutorials**](Tutorials) | [**Premade Configurations**](Premade-Configurations) |
+| [**BungeeCord Support**](BungeeCord-Support) | [**DeluxeMenus Converter**](DeluxeMenus-Converter) |

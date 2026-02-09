@@ -679,4 +679,4 @@ For a ban with a custom reason, you could use a chat fetcher approach:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**Developer API**](Developer-API) | [**Plugin Integrations**](Plugin-Integrations) |
+| [**DeluxeMenus Converter**](DeluxeMenus-Converter) | [**Premade Configurations**](Premade-Configurations) |

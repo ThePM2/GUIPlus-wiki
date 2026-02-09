@@ -326,6 +326,6 @@ softdepend: [GUIPlus]
 
 ---
 
-| ← Previous | Next → |
-|:---|---:|
-| [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting) | [**Tutorials**](Tutorials) |
+| ← Previous |
+|:---|
+| [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting) |

@@ -96,7 +96,7 @@ Yes. Use custom model data (`item-custom-model-data`) for custom item textures, 
 
 ### How do I open a GUI from an NPC?
 
-If using Citizens, add a command to the NPC: `/npc command add -p gui open <name>`. Any NPC plugin that supports running commands on interaction works similarly. See [Plugin Integrations — Citizens](Plugin-Integrations#citizens--npcs).
+If using Citizens, add a command to the NPC: `/npc command add -p gui open <name>`. Any NPC plugin that supports running commands on interaction works similarly. See [Plugin Integrations](Plugin-Integrations).
 
 ### How do I add a cooldown to a button?
 
@@ -220,4 +220,4 @@ If you're still having issues:
 
 | ← Previous | Next → |
 |:---|---:|
-| [**DeluxeMenus Converter**](DeluxeMenus-Converter) | [**Developer API**](Developer-API) |
+| [**Tips & Best Practices**](Tips-and-Best-Practices) | [**Developer API**](Developer-API) |

@@ -128,7 +128,7 @@ This example creates a deposit feature where players type an amount, it validate
     - §7You have come to the right place!
     - ''
     - §bClick to deposit
-  skullBase64: eyJ0ZXh0dXJlcy...
+  skullBase64: '%self_base64%'
   click-events:
     chat-fetcher:
       message: §ePlease type the amount to deposit in chat! §8(Make sure you have enough money)
