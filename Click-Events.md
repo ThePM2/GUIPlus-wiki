@@ -8,7 +8,7 @@
 
 Click events are actions that execute when a player clicks an item in a GUI. Each item can have multiple click events that execute in sequence.
 
-## Quick Reference
+## 📋 Quick Reference
 
 | ID | Description |
 |----|-------------|
@@ -38,7 +38,7 @@ Click events are actions that execute when a player clicks an item in a GUI. Eac
 | [`server-click-event`](#server-bungeecord) | Send to another server |
 | [`player-points-remove`](#player-points-remove) | Remove PlayerPoints |
 
-## Click Event Structure
+## 📐 Click Event Structure
 
 Click events are defined inside an item's `click-events` map:
 
@@ -51,7 +51,7 @@ click-events:
       - say Hello from %player%
 ```
 
-## Common Properties
+## ⚙ Common Properties
 
 Every click event supports these YAML properties:
 
@@ -73,7 +73,7 @@ click-events:
     clickType: LEFT
 ```
 
-## All Click Event Types
+## 🖱 All Click Event Types
 
 ### Message
 **ID:** `message`
@@ -528,7 +528,7 @@ click-events:
     amount: 100
 ```
 
-## Combining Multiple Click Events
+## 🔗 Combining Multiple Click Events
 
 Items can have multiple click events that execute in sequence:
 
@@ -544,7 +544,7 @@ click-events:
   close-inventory: {}
 ```
 
-## Click Type Restrictions
+## 🎯 Click Type Restrictions
 
 Restrict events to specific mouse buttons by assigning unique keys:
 
@@ -560,7 +560,7 @@ click-events:
 
 > **Note:** Each click event entry needs a unique key in YAML. If you need two events of the same type (e.g., two `message` events), give them different keys like `buy-message` and `info-message`. The event type is determined by the internal structure, not the key name.
 
-## Open Events
+## 📂 Open Events
 
 Some click events can run when the scene opens instead of on click. The `glow-at-item` event does this automatically. For other events, `openEvent` can be configured through the in-game editor — it is stored in the item's compressed data rather than as a direct YAML field.
 

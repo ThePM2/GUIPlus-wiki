@@ -8,7 +8,7 @@
 
 GUIPlus integrates with a wide range of plugins through PlaceholderAPI placeholders, Vault economy, and command execution. This page documents how to set up and use GUIPlus with popular plugins.
 
-## Vault & Economy Plugins
+## 💰 Vault & Economy Plugins
 
 **Required for:** `money-give`, `money-remove`, `money-set`, `has-money` condition
 
@@ -44,7 +44,7 @@ click-events:
 
 ---
 
-## LuckPerms
+## 🔑 LuckPerms
 
 **Used for:** Permission-based conditions, rank display in lore
 
@@ -77,7 +77,7 @@ Create different menu experiences per rank by using conditions on items. VIP pla
 
 ---
 
-## EssentialsX
+## 🧰 EssentialsX
 
 **Used for:** Warps, homes, teleportation, kits
 
@@ -127,7 +127,7 @@ item-lore:
 
 ---
 
-## ItemsAdder
+## 🎨 ItemsAdder
 
 **Used for:** Custom items, custom textures, custom blocks in GUIs
 
@@ -172,7 +172,7 @@ item-model: 'mynamespace:custom_diamond'
 
 ---
 
-## Oraxen
+## 🎭 Oraxen
 
 **Used for:** Custom items, custom textures, glyphs
 
@@ -197,7 +197,7 @@ item-name: '%oraxen_coin% §6Premium Shop'
 
 ---
 
-## WorldGuard
+## 🛡 WorldGuard
 
 **Used for:** Region-based conditions, protected area menus
 
@@ -219,7 +219,7 @@ conditions:
 
 ---
 
-## Citizens / NPCs
+## 🧑 Citizens / NPCs
 
 **Used for:** Opening GUIs from NPC interactions
 
@@ -242,7 +242,7 @@ Any NPC plugin that supports running commands on interaction works with GUIPlus.
 
 ---
 
-## DiscordSRV
+## 💬 DiscordSRV
 
 **Used for:** Displaying Discord-linked info in GUIs
 
@@ -255,7 +255,7 @@ item-lore:
 
 ---
 
-## Towny / Factions
+## ⚔ Towny / Factions
 
 **Used for:** Displaying faction/town info in GUIs
 
@@ -283,7 +283,7 @@ item-lore:
 
 ---
 
-## HeadDatabase
+## 💀 HeadDatabase
 
 **Used for:** Accessing custom heads from the HeadDatabase library
 
@@ -293,7 +293,7 @@ GUIPlus automatically integrates with HeadDatabase when it's present. You can al
 
 ---
 
-## Multiverse-Core
+## 🌍 Multiverse-Core
 
 **Used for:** Multi-world teleportation, world-specific GUIs
 
@@ -321,7 +321,7 @@ conditions:
 
 ---
 
-## PAPIProxyBridge
+## 🌐 PAPIProxyBridge
 
 **Used for:** Displaying cross-server data in BungeeCord/Velocity networks
 
@@ -341,7 +341,7 @@ click-events:
 
 ---
 
-## General Integration Pattern
+## 🔧 General Integration Pattern
 
 Any plugin that provides either **PlaceholderAPI placeholders** or **commands** can be used with GUIPlus:
 

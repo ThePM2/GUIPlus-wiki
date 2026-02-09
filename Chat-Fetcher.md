@@ -8,7 +8,7 @@
 
 The Chat Fetcher system allows you to prompt players for text input via chat and use that input in subsequent click events. This is one of the most powerful features in GUIPlus, enabling interactive forms, search menus, and dynamic actions.
 
-## How It Works
+## ⚙ How It Works
 
 1. Player clicks an item with a `chat-fetcher` click event
 2. The GUI closes and the player sees a prompt message in chat
@@ -17,7 +17,7 @@ The Chat Fetcher system allows you to prompt players for text input via chat and
 5. If validation passes, nested click events execute with the `%input%` placeholder replaced by what the player typed
 6. If validation fails, the `conditionFailMessage` is shown
 
-## Basic Structure
+## 📐 Basic Structure
 
 ```yaml
 click-events:
@@ -28,7 +28,7 @@ click-events:
         message: §aYou typed: %input%
 ```
 
-## With Input Validation
+## ✅ With Input Validation
 
 Add conditions to validate the player's input before executing events:
 
@@ -71,7 +71,7 @@ click-events:
           - gui open bank %player%
 ```
 
-## Configuration Options
+## ⚙ Configuration Options
 
 Several `config.yml` options control chat fetcher behavior:
 
@@ -81,7 +81,7 @@ Several `config.yml` options control chat fetcher behavior:
 | `disable-commands-chat-fetcher` | `true` | Block commands while waiting for input |
 | `disable-guis-chat-fetcher` | `true` | Block GUI opening while waiting for input |
 
-## Title Mode Messages
+## 🏷 Title Mode Messages
 
 If the chat fetcher `message` contains `!@!`, it is displayed as a title/subtitle on the player's screen instead of a chat message:
 
@@ -106,13 +106,13 @@ The `!@!` format is: `title!@!subtitle!@!fadeIn!@!stay!@!fadeOut`
 
 If the message does **not** contain `!@!`, it is sent as a normal chat message.
 
-## Cancelling Input
+## ❌ Cancelling Input
 
 Players can cancel the chat fetcher prompt by typing `exit` in chat. They will be returned to normal mode.
 
 > **Note:** The `exit` keyword is built-in and cannot be changed. The "type `exit` to cancel" reminder message frequency is controlled by the `chat-fetcher-exit-message-cooldown` config option.
 
-## Full Example: Banking System
+## 🏦 Full Example: Banking System
 
 This example creates a deposit feature where players type an amount, it validates the input, removes the money, saves it as a bank balance, and reopens the bank GUI:
 

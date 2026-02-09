@@ -8,7 +8,7 @@
 
 GUIPlus includes a built-in converter that automatically migrates your existing DeluxeMenus configuration files to GUIPlus format.
 
-## How It Works
+## ⚙ How It Works
 
 1. Place your DeluxeMenus GUI files inside the `plugins/GUIPlus/DeluxeMenus/` folder
 2. Start or reload the server
@@ -17,7 +17,7 @@ GUIPlus includes a built-in converter that automatically migrates your existing 
 
 The converter runs automatically during plugin startup when files are found in the `DeluxeMenus/` folder.
 
-## Re-Converting
+## 🔄 Re-Converting
 
 If you need to re-run the conversion (e.g., after fixing source files), use:
 
@@ -27,7 +27,7 @@ If you need to re-run the conversion (e.g., after fixing source files), use:
 
 This requires the `guiplus.gui.reconvert` permission.
 
-## What Gets Converted
+## ✅ What Gets Converted
 
 The converter handles the core menu structure from DeluxeMenus format:
 
@@ -37,7 +37,7 @@ The converter handles the core menu structure from DeluxeMenus format:
 - Basic click commands
 - Permission requirements
 
-## After Conversion
+## 📝 After Conversion
 
 After conversion, review your new GUI files in `CustomGuis/` and make any necessary adjustments. You may want to:
 

@@ -8,7 +8,7 @@
 
 GUIPlus supports sending players to other servers on your BungeeCord or Velocity network using the Server click event.
 
-## Setup
+## 🔧 Setup
 
 BungeeCord support works out of the box. GUIPlus registers the `BungeeCord` plugin messaging channel automatically when the plugin starts.
 
@@ -19,7 +19,7 @@ settings:
   bungeecord: true
 ```
 
-## Server Click Event
+## 🖱 Server Click Event
 
 Use the `server-click-event` to send players to another server:
 
@@ -31,7 +31,7 @@ click-events:
 
 The `server` field must match the server name as configured in your BungeeCord/Velocity `config.yml`.
 
-## Example: Server Selector
+## 🌐 Example: Server Selector
 
 ```yaml
 id: servers
@@ -84,7 +84,7 @@ scenes:
             server: skyblock
 ```
 
-## Combining with Other Events
+## 🔗 Combining with Other Events
 
 You can combine the server event with sounds, messages, or conditions:
 

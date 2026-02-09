@@ -8,7 +8,7 @@
 
 The main configuration file is located at `plugins/GUIPlus/config.yml`. Below is every option explained.
 
-## Full Default Configuration
+## 📄 Full Default Configuration
 
 ```yaml
 # Please do not modify the 'v' field, it is used to detect updates
@@ -65,7 +65,7 @@ command-settings:
     description: "Main command for the GUIPlus plugin"
 ```
 
-## Options Explained
+## 🔧 Options Explained
 
 ### Version Field
 ```yaml

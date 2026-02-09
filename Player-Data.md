@@ -8,7 +8,7 @@
 
 GUIPlus includes a built-in player data storage system that lets you save, retrieve, and manipulate per-player data fields. This enables features like bank balances, kill counters, quest progress, and any custom data you need.
 
-## How It Works
+## ⚙ How It Works
 
 Player data is stored in `plugins/GUIPlus/playerData.yml`, keyed by player UUID. Each player can have any number of custom fields with string or numeric values.
 
@@ -22,7 +22,7 @@ d290a6cf-1234-5678-90ab-cdef12345678:
   custom-note: Hello World
 ```
 
-## Saving Data
+## 💾 Saving Data
 
 Use the `save-player-info` click event to save data fields:
 
@@ -100,7 +100,7 @@ click-events:
     save-format: kills:%GUIPlus_player_info_kills%+1,last-kill-time:now
 ```
 
-## Retrieving Data
+## 📖 Retrieving Data
 
 Use the `%GUIPlus_player_info_<field>%` placeholder to display saved data anywhere in your GUIs:
 
@@ -113,7 +113,7 @@ item-lore:
 
 If a field has not been set for a player, the placeholder returns the string `null`.
 
-## Full Example: Point Shop
+## 🛒 Full Example: Point Shop
 
 ```yaml
 id: pointshop

@@ -6,7 +6,7 @@
 
 ---
 
-## File Organization
+## 📁 File Organization
 
 ### Naming Conventions
 
@@ -39,7 +39,7 @@ plugins/GUIPlus/CustomGuis/
 
 ---
 
-## Performance
+## ⚡ Performance
 
 ### Minimize Placeholder Usage in Lore
 
@@ -88,7 +88,7 @@ Conditions are evaluated when the GUI opens and when items refresh. Simpler cond
 
 ---
 
-## YAML Tips
+## 📝 YAML Tips
 
 ### Quoting Strings
 
@@ -145,7 +145,7 @@ scenes:
 
 ---
 
-## Common Patterns
+## 🔁 Common Patterns
 
 ### Glass Pane Borders
 
@@ -236,7 +236,7 @@ item-lore:
 
 ---
 
-## Common Pitfalls
+## ⚠ Common Pitfalls
 
 ### Duplicate YAML Keys
 
@@ -316,7 +316,7 @@ Check the [Bukkit Material list](https://hub.spigotmc.org/javadocs/bukkit/org/bu
 
 ---
 
-## Security Considerations
+## 🔒 Security Considerations
 
 ### The `setOp` Flag
 

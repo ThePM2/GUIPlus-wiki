@@ -6,7 +6,7 @@
 
 ---
 
-## Installation
+## 📥 Installation
 
 1. Download the latest `GUIPlus.jar` file
 2. Place it in your server's `plugins/` folder
@@ -16,7 +16,7 @@
 
 4. The plugin will generate its default configuration files
 
-## Default Files
+## 📂 Default Files
 
 After first startup, GUIPlus creates the following files and folders:
 
@@ -31,7 +31,7 @@ plugins/GUIPlus/
     └── bank.yml         # Example banking GUI
 ```
 
-## Your First GUI
+## 🎯 Your First GUI
 
 GUIPlus comes with two example GUIs to get you started:
 
@@ -91,12 +91,12 @@ scenes:
 
 Then reload with `/gui reload` and open it with `/gui open mygui` or `/mymenu`.
 
-## Next Steps
+## 🚀 Next Steps
 
-- Learn about the full [GUI structure](Creating-GUIs)
-- Explore all [click events](Click-Events)
-- Add logic with [conditions](Conditions)
-- Use dynamic content with [PlaceholderAPI](PlaceholderAPI-Placeholders)
+- 🖼 Learn about the full [GUI structure](Creating-GUIs)
+- 🖱 Explore all [click events](Click-Events)
+- ✅ Add logic with [conditions](Conditions)
+- 🔗 Use dynamic content with [PlaceholderAPI](PlaceholderAPI-Placeholders)
 
 ---
 

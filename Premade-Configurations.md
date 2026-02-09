@@ -8,7 +8,7 @@
 
 These premade configurations are complete, working GUIs that you can drop directly into your `plugins/GUIPlus/CustomGuis/` folder. Customize them to fit your server's theme and requirements.
 
-## How to Use
+## 📥 How to Use
 
 1. Copy the YAML below into a new `.yml` file inside `plugins/GUIPlus/CustomGuis/`
 2. Run `/gui reload`
@@ -17,7 +17,7 @@ These premade configurations are complete, working GUIs that you can drop direct
 
 ---
 
-## Server Rules Menu
+## 📜 Server Rules Menu
 
 **Command:** `/rules` | **Type:** Paginated chest GUI
 
@@ -166,7 +166,7 @@ scenes:
 
 ---
 
-## Gamemode Selector (Staff)
+## 🎮 Gamemode Selector (Staff)
 
 **Command:** `/gm` | **Permission:** `staff.gamemode`
 
@@ -251,7 +251,7 @@ scenes:
 
 ---
 
-## Confirmation Dialog
+## ✅ Confirmation Dialog
 
 **Usage:** Open with `/gui open confirm` from other click events
 
@@ -311,7 +311,7 @@ scenes:
 
 ---
 
-## Social Links Menu
+## 🔗 Social Links Menu
 
 **Command:** `/social` | **Type:** Hopper GUI
 
@@ -402,7 +402,7 @@ scenes:
 
 ---
 
-## Daily Reward Claim
+## 🎁 Daily Reward Claim
 
 **Command:** `/daily` | **Type:** Chest GUI with cooldown
 
@@ -478,7 +478,7 @@ scenes:
 
 ---
 
-## Quick Teleport Menu
+## 🧭 Quick Teleport Menu
 
 **Command:** `/tp-menu` | **Type:** Dispenser GUI
 
@@ -574,7 +574,7 @@ scenes:
 
 ---
 
-## Customization Tips
+## ✏ Customization Tips
 
 When adapting these templates:
 

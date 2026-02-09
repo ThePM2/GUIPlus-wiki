@@ -8,7 +8,7 @@
 
 > **Tip:** All commands support tab-completion for GUI names and player names.
 
-## Commands
+## 📋 Commands
 
 The base command is `/gui`. Aliases: `/guiplus`, `/gplus`, `/gp`
 
@@ -26,7 +26,7 @@ These aliases can be changed in `config.yml` under `command-settings`.
 | `/gui last` | Opens the last viewed GUI (alias for `!!`) | `guiplus.gui.openlast` |
 | `/gui reconvert` | Re-converts legacy inventory format files | `guiplus.gui.reconvert` |
 
-## Permissions
+## 🔑 Permissions
 
 | Permission | Description |
 |------------|-------------|
@@ -40,7 +40,7 @@ These aliases can be changed in `config.yml` under `command-settings`.
 | `guiplus.gui.openlast` | Permission to open the last viewed GUI |
 | `guiplus.gui.reconvert` | Permission to run the legacy converter |
 
-## Per-GUI Permissions
+## 🔐 Per-GUI Permissions
 
 Individual GUIs can have their own permission requirement set in their YAML configuration using the `permission` field:
 
@@ -54,11 +54,11 @@ permission: myserver.vip.shop
 
 Players without `myserver.vip.shop` will not be able to view this GUI.
 
-## Console Usage
+## 🖥 Console Usage
 
 The `/gui open <name> <player>` command can be used from the console to open a GUI for a specific player. This is useful for integrating with other plugins via commands.
 
-## Command Aliases per GUI
+## 🏷 Command Aliases per GUI
 
 Each GUI can define its own command alias using the `commandAlias` field. This registers a shortcut command to open that specific GUI:
 

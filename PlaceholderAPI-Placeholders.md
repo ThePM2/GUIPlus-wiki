@@ -8,7 +8,7 @@
 
 GUIPlus integrates with [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) to provide dynamic content in GUIs and registers its own custom placeholders.
 
-## Using Placeholders in GUIs
+## 📝 Using Placeholders in GUIs
 
 PlaceholderAPI placeholders can be used in nearly every text field:
 
@@ -34,7 +34,7 @@ item-lore:
 
 Lore lines containing placeholders are updated automatically while the GUI is open (every 20 ticks / 1 second).
 
-## GUIPlus Custom Placeholders
+## 🔗 GUIPlus Custom Placeholders
 
 GUIPlus registers the following custom placeholders under the identifier `GUIPlus`:
 
@@ -48,7 +48,7 @@ GUIPlus registers the following custom placeholders under the identifier `GUIPlu
 | `%GUIPlus_gui_scenes_<id>%` | Returns the number of scenes in the specified GUI | `%GUIPlus_gui_scenes_bank%` → `1` |
 | `%GUIPlus_self_base64%` | Returns the player's skin texture as a Base64 string (for skull items) | Used in `skullBase64` field |
 
-## Player Info Placeholder
+## 💾 Player Info Placeholder
 
 The `%GUIPlus_player_info_<field>%` placeholder is the most commonly used GUIPlus placeholder. It retrieves data saved via the [Save Player Info click event](Click-Events#save-player-info).
 
@@ -67,7 +67,7 @@ If the field has not been set for a player, the placeholder returns the string `
 
 See [Player Data](Player-Data) for full details on saving and retrieving data.
 
-## Special Placeholders
+## ⭐ Special Placeholders
 
 ### `%input%`
 
@@ -94,7 +94,7 @@ The name of the player who executed the action. Useful in player picker click ev
 
 Used in skull textures to dynamically render the viewing player's skin. See [Custom Heads](Custom-Heads-and-Skulls).
 
-## Combining with Other PAPI Plugins
+## 🧩 Combining with Other PAPI Plugins
 
 Since GUIPlus supports any PlaceholderAPI placeholder, you can use placeholders from any installed PAPI expansion:
 

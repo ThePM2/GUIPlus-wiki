@@ -10,7 +10,7 @@ GUIs in GUIPlus are defined as YAML files inside the `plugins/GUIPlus/CustomGuis
 
 > **Tip:** You can also create GUIs through the in-game editor with `/gui`. The editor generates the YAML for you. See [Getting Started](Getting-Started) for the editor workflow.
 
-## GUI Structure
+## 📐 GUI Structure
 
 Every GUI file follows this structure:
 
@@ -44,7 +44,7 @@ scenes:
             permission: some.perm
 ```
 
-## Inventory Types
+## 📦 Inventory Types
 
 | Type | Size | Description |
 |------|------|-------------|
@@ -53,7 +53,7 @@ scenes:
 | `dropper` | 9 slots (3x3) | Dropper-style layout. Fixed size. |
 | `hopper` | 5 slots (1x5) | Hopper-style layout. Fixed size. |
 
-## Slot Numbers
+## 🔢 Slot Numbers
 
 Slots are numbered starting from `0`, going left to right, top to bottom:
 
@@ -76,7 +76,7 @@ Slots are numbered starting from `0`, going left to right, top to bottom:
  6  7  8
 ```
 
-## Item Properties
+## 🏷 Item Properties
 
 Each item in a scene supports the following properties:
 
@@ -101,7 +101,7 @@ Each item in a scene supports the following properties:
 
 > **Note:** The `sorting-group` property is managed through the in-game editor and is stored in the item's compressed data. It is not a hand-writable YAML field. See [Conditions — Sorting Groups](Conditions#sorting-groups) for details.
 
-## Item Attributes
+## ⚔ Item Attributes
 
 You can add attribute modifiers to items using the `item-attributes` property. Each attribute has a modifier with an amount, operation, and UUID:
 
@@ -122,7 +122,7 @@ item-attributes:
 | `operation` | `ADD_NUMBER`, `ADD_SCALAR`, or `MULTIPLY_SCALAR_1` |
 | `uuid` | A UUID to identify this modifier (use any valid UUID) |
 
-## Color Codes
+## 🎨 Color Codes
 
 GUIPlus supports standard Minecraft color codes using `§` (section sign):
 
@@ -145,7 +145,7 @@ GUIPlus supports standard Minecraft color codes using `§` (section sign):
 | `§e` | Yellow | | |
 | `§f` | White | | |
 
-## Command Alias
+## 🏷 Command Alias
 
 The `commandAlias` field registers a shortcut command for your GUI:
 
@@ -156,7 +156,7 @@ commandAlias: shop
 
 Players can now use `/shop` to open this GUI directly, instead of `/gui open shop`.
 
-## Command Target
+## 🎯 Command Target
 
 The `commandAliasTarget` field controls whether the command alias accepts a player argument:
 
@@ -166,7 +166,7 @@ The `commandAliasTarget` field controls whether the command alias accepts a play
 | `REQUIRED` | `/shop PlayerName` is required (useful for admin tools) |
 | `DISABLED` | No player argument accepted |
 
-## Example: Complete Admin Panel
+## 🛡 Example: Complete Admin Panel
 
 ```yaml
 id: adminpanel

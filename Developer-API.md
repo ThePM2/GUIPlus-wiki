@@ -10,7 +10,7 @@ GUIPlus provides a public API for developers to create and manage GUIs programma
 
 > **Note:** The GUIPlus API is designed around direct class usage. Since GUIPlus does not publish to a Maven repository, you will need to add the plugin JAR as a local dependency.
 
-## Getting the Plugin Instance
+## 🔌 Getting the Plugin Instance
 
 ```java
 import com.infiniteplugins.guiplus.GUIPlus;
@@ -18,7 +18,7 @@ import com.infiniteplugins.guiplus.GUIPlus;
 GUIPlus plugin = GUIPlus.getInstance();
 ```
 
-## Creating a GUI Programmatically
+## 🖼 Creating a GUI Programmatically
 
 ```java
 import com.infiniteplugins.guiplus.api.gui.GUI;
@@ -34,7 +34,7 @@ gui.setRows(3);
 GUIPlus.getGuiManager().addGui(gui);
 ```
 
-## GUI Types
+## 📦 GUI Types
 
 The `GUI.Type` enum provides these inventory types:
 
@@ -45,7 +45,7 @@ GUI.Type.DROPPER    // 3x3 dropper
 GUI.Type.HOPPER     // 5-slot hopper
 ```
 
-## Accessing Existing GUIs
+## 🔍 Accessing Existing GUIs
 
 ```java
 import com.infiniteplugins.guiplus.api.gui.GuiManager;
@@ -63,7 +63,7 @@ List<GUI> allGuis = manager.getAll();
 boolean exists = manager.getGui("myGui") != null;
 ```
 
-## Opening a GUI for a Player
+## 🎯 Opening a GUI for a Player
 
 ```java
 Player player = ...;
@@ -77,7 +77,7 @@ if (gui != null) {
 }
 ```
 
-## Custom Click Events
+## 🖱 Custom Click Events
 
 Create custom click event types by extending the `GUIClick` class:
 
@@ -153,7 +153,7 @@ public class MyCustomClickEvent extends GUIClick {
 
 > **Important:** Always call `clickableProcess.notifyProcess()` at the end of your `onClick` method. This signals the event processing pipeline to proceed with the next click event in the sequence.
 
-## Custom Conditions
+## ✅ Custom Conditions
 
 Create custom condition types by extending the `GUICondition` class:
 
@@ -214,7 +214,7 @@ public class MyCustomCondition extends GUICondition {
 
 > **Note:** The `inverted` property is handled automatically by the base class. Your `canDisplayInternal` should return the non-inverted result.
 
-## Player Data API
+## 💾 Player Data API
 
 Access the persistent player data system:
 
@@ -237,7 +237,7 @@ data.setValue("kills", "25");
 
 > **Note:** `PlayerData` is a Java record. Each call to `getPlayerData()` creates a new instance, but all instances share the same underlying YAML config. Changes via `setValue` are saved to disk immediately.
 
-## Chat Fetcher API
+## 💬 Chat Fetcher API
 
 Programmatically prompt a player for chat input:
 
@@ -267,7 +267,7 @@ new ChatFetcher(player, true)  // true = disable the "type exit to cancel" messa
 
 > **Important:** You must call `.build()` at the end to register the chat fetcher with the manager. The `onFetch` callback must return a `Boolean` — `true` to accept the input and complete, `false` to reject and keep waiting.
 
-## Scheduler Utilities
+## ⏱ Scheduler Utilities
 
 GUIPlus provides a scheduler wrapper for running tasks:
 
@@ -288,7 +288,7 @@ GUIPlus.sync().after(20L).run(() -> {
 });
 ```
 
-## Event Listeners
+## 📡 Event Listeners
 
 GUIPlus registers the following Bukkit events in `GuiManager`:
 
@@ -299,7 +299,7 @@ GUIPlus registers the following Bukkit events in `GuiManager`:
 
 > **Note:** `InventoryDragEvent` is handled separately in the internal `SystemGuiManager` for the editor, not in the public `GuiManager`.
 
-## Maven / Local Dependency
+## 📦 Maven / Local Dependency
 
 Since GUIPlus is not published to a remote Maven repository, add the plugin JAR as a local dependency:
 

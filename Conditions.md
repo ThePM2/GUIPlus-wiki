@@ -8,7 +8,7 @@
 
 Conditions control whether an item is shown to a player and whether click events are allowed to execute. If a condition fails, the item is hidden (or replaced by a nested fallback item), and the `conditionFailMessage` is shown.
 
-## Condition Structure
+## 📐 Condition Structure
 
 Conditions are defined inside an item's `conditions` map:
 
@@ -29,7 +29,7 @@ Every condition supports:
 |----------|------|-------------|
 | `inverted` | Boolean | When `true`, the condition result is negated (passes when it would normally fail) |
 
-## All Condition Types
+## ✅ All Condition Types
 
 ### Has Money
 **ID:** `has-money`
@@ -233,7 +233,7 @@ conditions:
     amount: 500
 ```
 
-## Using Conditions with Click Events
+## 🔗 Using Conditions with Click Events
 
 Conditions can be applied at two levels:
 
@@ -273,7 +273,7 @@ click-events:
 
 > **Tip:** For numeric comparisons in chat fetcher validation, use `conditional-placeholder` with the `conditional_condition` field. The `is-integer` and `is-double` conditions only validate format, not value ranges.
 
-## Inverted Conditions
+## 🔄 Inverted Conditions
 
 Any condition can be inverted to check for the **opposite**:
 
@@ -286,7 +286,7 @@ conditions:
 
 This passes when the player does **not** have the `server.banned` permission.
 
-## Sorting Groups
+## 📊 Sorting Groups
 
 Sorting groups allow items to serve as fallbacks for each other. If the primary item's condition fails, the next item in the group is checked — the first item whose conditions pass is displayed. Items in the same sorting group must share the same `slot` number.
 

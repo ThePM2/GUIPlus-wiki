@@ -8,7 +8,7 @@
 
 These tutorials walk you through building practical, real-world GUIs from scratch. Each tutorial builds on GUIPlus features and shows how they work together.
 
-## Tutorial 1: Warp Menu
+## 🗺 Tutorial 1: Warp Menu
 
 A categorized warp menu where players can teleport to different locations. This demonstrates basic click events, conditions, and item layout.
 
@@ -144,7 +144,7 @@ Players type `/warps` to open a menu with teleport options. Protected warps are 
 
 ---
 
-## Tutorial 2: Donation Shop with Confirmation
+## 🛒 Tutorial 2: Donation Shop with Confirmation
 
 A shop where players spend in-game money. This tutorial shows economy integration, chat fetcher for quantity input, and multi-step confirmation.
 
@@ -277,7 +277,7 @@ Let players choose how many of an item to buy using chat fetcher:
 
 ---
 
-## Tutorial 3: Player Statistics Dashboard
+## 📊 Tutorial 3: Player Statistics Dashboard
 
 A dynamic profile menu that displays live player data using PlaceholderAPI. This tutorial shows advanced placeholder usage and dynamic content.
 
@@ -383,7 +383,7 @@ Every placeholder in the lore is updated automatically while the GUI is open (ev
 
 ---
 
-## Tutorial 4: Multi-Page Crate Rewards Preview
+## 🎁 Tutorial 4: Multi-Page Crate Rewards Preview
 
 A paginated rewards preview for server crates. This demonstrates scenes with navigation and decorative borders.
 
@@ -551,7 +551,7 @@ scenes:
 
 ---
 
-## Tutorial 5: Staff Punishment Panel with Logging
+## 🛡 Tutorial 5: Staff Punishment Panel with Logging
 
 An admin tool that combines player pickers, chat fetcher input, and player data to create a punishment system with logging.
 
@@ -669,11 +669,11 @@ For a ban with a custom reason, you could use a chat fetcher approach:
 
 ---
 
-## What's Next?
+## 🚀 What's Next?
 
-- Browse [Premade Configurations](Premade-Configurations) for ready-to-use GUI templates
-- Learn about [Plugin Integrations](Plugin-Integrations) for connecting with other plugins
-- Read [Tips & Best Practices](Tips-and-Best-Practices) for optimization advice
+- 📦 Browse [Premade Configurations](Premade-Configurations) for ready-to-use GUI templates
+- 🧩 Learn about [Plugin Integrations](Plugin-Integrations) for connecting with other plugins
+- 💡 Read [Tips & Best Practices](Tips-and-Best-Practices) for optimization advice
 
 ---
 

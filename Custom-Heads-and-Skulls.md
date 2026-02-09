@@ -8,7 +8,7 @@
 
 GUIPlus supports custom player head textures using Base64-encoded skin data. This allows you to use decorative heads, player avatars, and custom icons in your GUIs.
 
-## Using Base64 Skull Textures
+## 🔑 Using Base64 Skull Textures
 
 Set the item material to `PLAYER_HEAD` and add the `skullBase64` property with a Base64-encoded texture string:
 
@@ -21,7 +21,7 @@ Set the item material to `PLAYER_HEAD` and add the `skullBase64` property with a
   skullBase64: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWZkMTA4MzgzZGZhNWIwMmU4NjYzNTYwOTU0MTUyMGU0ZTE1ODk1MmQ2OGMxYzhmOGYyMDBlYzdlODg2NDJkIn19fQ==
 ```
 
-## Finding Base64 Textures
+## 🔍 Finding Base64 Textures
 
 You can find Base64 skull textures from these resources:
 
@@ -30,7 +30,7 @@ You can find Base64 skull textures from these resources:
 
 On minecraft-heads.com, look for the "Value" field in the head's detail page — that's the Base64 string you need.
 
-## Dynamic Player Skin
+## 👤 Dynamic Player Skin
 
 Use the `%self_base64%` placeholder to show the viewing player's own skin:
 
@@ -51,11 +51,11 @@ This dynamically renders each player's own head, making it ideal for profile men
 
 The `%self_base64%` placeholder is also available as the full PlaceholderAPI format: `%GUIPlus_self_base64%`.
 
-## HeadDatabase Integration
+## 🧩 HeadDatabase Integration
 
 If you have the [HeadDatabase](https://www.spigotmc.org/resources/head-database.14280/) plugin installed, GUIPlus can use heads from that database as well. HeadDatabase is a soft dependency and will be used automatically when available.
 
-## Example: Player Profile Menu
+## 👤 Example: Player Profile Menu
 
 ```yaml
 id: profile

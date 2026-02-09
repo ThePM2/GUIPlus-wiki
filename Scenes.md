@@ -10,7 +10,7 @@ Scenes allow you to create multi-page GUIs within a single menu. Each scene has 
 
 > **Tip:** Scenes are zero-indexed. The first scene is `'0'`, the second is `'1'`, and so on. Each scene has completely independent items and layout.
 
-## Scene Structure
+## 📐 Scene Structure
 
 Scenes are defined inside the `scenes` map of a GUI file. Scene IDs are zero-indexed strings:
 
@@ -36,7 +36,7 @@ scenes:
           previous-scene-click: {}
 ```
 
-## Scene Properties
+## 🏷 Scene Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
@@ -45,7 +45,7 @@ scenes:
 | `open-events` | Map | Click events that execute when this scene opens |
 | `open-conditions` | Map | Conditions that must be met for open-events to execute |
 
-## Navigation Click Events
+## 🧭 Navigation Click Events
 
 ### Next Scene
 Moves to the next scene in the sequence:
@@ -63,7 +63,7 @@ click-events:
   previous-scene-click: {}
 ```
 
-## Scene Open Events
+## 📂 Scene Open Events
 
 Scenes support two ways to run events when they open:
 
@@ -95,7 +95,7 @@ The `open-conditions` control whether the scene's `open-events` execute. If any 
 
 Through the in-game editor, individual click events on items can be marked with `openEvent: true` to run when the scene opens instead of on click. The `glow-at-item` click event does this automatically.
 
-## Scene Delays
+## ⏱ Scene Delays
 
 Add a delay before a scene opens (in ticks, 20 ticks = 1 second):
 
@@ -109,7 +109,7 @@ scenes:
     items: ...
 ```
 
-## Example: Multi-Page Shop
+## 🛒 Example: Multi-Page Shop
 
 ```yaml
 id: shop

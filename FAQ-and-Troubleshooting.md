@@ -6,7 +6,7 @@
 
 ---
 
-## Frequently Asked Questions
+## 💡 Frequently Asked Questions
 
 ### How do I create a new GUI?
 
@@ -117,7 +117,7 @@ Yes. See [Premade Configurations](Premade-Configurations) for ready-to-use templ
 
 ---
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### GUI doesn't open
 
@@ -206,7 +206,7 @@ Yes. See [Premade Configurations](Premade-Configurations) for ready-to-use templ
 
 ---
 
-## Getting Help
+## 🆘 Getting Help
 
 If you're still having issues:
 
