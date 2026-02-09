@@ -1,4 +1,10 @@
+> 💬 **INTERACTIVE**
+
 # Chat Fetcher
+
+*Prompt players for text input and use it in click events*
+
+---
 
 The Chat Fetcher system allows you to prompt players for text input via chat and use that input in subsequent click events. This is one of the most powerful features in GUIPlus, enabling interactive forms, search menus, and dynamic actions.
 
@@ -146,4 +152,6 @@ This example creates a deposit feature where players type an amount, it validate
 
 ---
 
-[Previous: Conditions](Conditions) | [Next: Player Data](Player-Data)
+| ← Previous | Next → |
+|:---|---:|
+| [**Conditions**](Conditions) | [**Player Data**](Player-Data) |

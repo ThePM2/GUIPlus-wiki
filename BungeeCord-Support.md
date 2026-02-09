@@ -1,4 +1,10 @@
+> 🔌 **INTEGRATIONS**
+
 # BungeeCord Support
+
+*Send players to other servers in your network*
+
+---
 
 GUIPlus supports sending players to other servers on your BungeeCord or Velocity network using the Server click event.
 
@@ -96,4 +102,6 @@ click-events:
 
 ---
 
-[Previous: PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders) | [Next: DeluxeMenus Converter](DeluxeMenus-Converter)
+| ← Previous | Next → |
+|:---|---:|
+| [**PlaceholderAPI Placeholders**](PlaceholderAPI-Placeholders) | [**Plugin Integrations**](Plugin-Integrations) |

@@ -1,4 +1,10 @@
+> 💬 **INTERACTIVE**
+
 # Custom Heads & Skulls
+
+*Use Base64 textures and dynamic player skins in your GUIs*
+
+---
 
 GUIPlus supports custom player head textures using Base64-encoded skin data. This allows you to use decorative heads, player avatars, and custom icons in your GUIs.
 
@@ -98,4 +104,6 @@ scenes:
 
 ---
 
-[Previous: Player Data](Player-Data) | [Next: PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders)
+| ← Previous | Next → |
+|:---|---:|
+| [**Player Data**](Player-Data) | [**PlaceholderAPI Placeholders**](PlaceholderAPI-Placeholders) |

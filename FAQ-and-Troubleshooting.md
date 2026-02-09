@@ -1,4 +1,10 @@
+> ❓ **HELP**
+
 # FAQ & Troubleshooting
+
+*Common questions and solutions for GUIPlus*
+
+---
 
 ## Frequently Asked Questions
 
@@ -51,6 +57,63 @@ Use `/gui open <name> <player>` (requires `guiplus.gui.open` permission) or `/gu
 ### How do I convert from DeluxeMenus?
 
 Place your DeluxeMenus files in `plugins/GUIPlus/DeluxeMenus/` and restart. See [DeluxeMenus Converter](DeluxeMenus-Converter).
+
+### How do I add sound effects to buttons?
+
+Use the `sound-click-event` click event alongside your other events. Sounds play at the player's location:
+
+```yaml
+click-events:
+  sound-click-event:
+    sound: UI_BUTTON_CLICK
+    volume: 1.0
+    pitch: 1.0
+  message:
+    message: §aButton clicked!
+```
+
+See [Click Events — Sound](Click-Events#sound) for all options.
+
+### How do I make a left-click / right-click do different things?
+
+Use the `clickType` property on each click event to restrict it to a specific mouse button:
+
+```yaml
+click-events:
+  buy-action:
+    message: §aPurchased!
+    clickType: LEFT
+  info-action:
+    message: §7This costs $500
+    clickType: RIGHT
+```
+
+Valid click types: `LEFT`, `RIGHT`, `MIDDLE`, `SHIFT_LEFT`, `SHIFT_RIGHT`, `NONE` (any click).
+
+### Can I use GUIPlus with ItemsAdder or Oraxen?
+
+Yes. Use custom model data (`item-custom-model-data`) for custom item textures, and console commands to give custom items. Font image placeholders work in item lore if the respective PAPI expansion is installed. See [Plugin Integrations](Plugin-Integrations) for details.
+
+### How do I open a GUI from an NPC?
+
+If using Citizens, add a command to the NPC: `/npc command add -p gui open <name>`. Any NPC plugin that supports running commands on interaction works similarly. See [Plugin Integrations — Citizens](Plugin-Integrations#citizens--npcs).
+
+### How do I add a cooldown to a button?
+
+Use the `cooldown` condition on the item. The cooldown value is in **milliseconds**:
+
+```yaml
+conditions:
+  cooldown:
+    cooldown: 60000
+    id: my-cooldown
+```
+
+This prevents the item from being clicked more than once per 60 seconds. See [Conditions — Cooldown](Conditions#cooldown).
+
+### Are there premade GUI templates I can use?
+
+Yes. See [Premade Configurations](Premade-Configurations) for ready-to-use templates including server rules, gamemode selectors, social links menus, daily rewards, and more.
 
 ---
 
@@ -110,8 +173,36 @@ Place your DeluxeMenus files in `plugins/GUIPlus/DeluxeMenus/` and restart. See 
 
 ### Performance issues
 
-- Reduce the number of placeholders in item lore
+- Reduce the number of placeholders in item lore (each is evaluated every second)
 - Avoid using many open GUIs simultaneously with dynamic content
+- Keep individual GUIs focused — split large menus into separate GUIs linked by commands
+- See [Tips & Best Practices — Performance](Tips-and-Best-Practices#performance) for detailed optimization guidance
+
+### Economy events not working (money-give, money-remove, has-money)
+
+- Verify **Vault** is installed and loaded (check `/plugins`)
+- Verify you have an economy plugin installed (EssentialsX, CMI, etc.)
+- Check that Vault is detecting your economy plugin: look for `[Vault] Hooking` messages in the startup log
+- If using `has-money` with a placeholder value (e.g., `'%input%'`), make sure the value resolves to a valid number
+
+### Chat fetcher closes but nothing happens
+
+- Check that the nested `click-events` inside the `chat-fetcher` are correctly indented under the chat fetcher block
+- Verify your conditions — if any condition fails, the `conditionFailMessage` is shown and nested events don't execute
+- Check the console for errors after entering input
+- Make sure the `%input%` placeholder is correctly placed in your nested events
+
+### Items flickering or disappearing
+
+- This usually happens when conditions are evaluated and items alternate between showing and hiding
+- Check that condition values (especially placeholder-based ones) return stable results
+- Ensure your YAML indentation is correct — misplaced conditions can cause unexpected behavior
+
+### Command alias not registering
+
+- Command aliases defined via `commandAlias` require a **full server restart** (not just `/gui reload`)
+- Check that no other plugin is already using the same command name
+- Verify the alias in the GUI file is a simple string without spaces or special characters
 
 ---
 
@@ -122,8 +213,11 @@ If you're still having issues:
 1. Enable `show-stacktrace: true` in `config.yml` for detailed error messages
 2. Enable `debug.enabled: true` for verbose logging
 3. Check the console output after reproducing the issue
-4. Join the plugin's Discord server for community support
+4. Review [Tips & Best Practices](Tips-and-Best-Practices) for common pitfalls
+5. Join the plugin's Discord server for community support
 
 ---
 
-[Previous: DeluxeMenus Converter](DeluxeMenus-Converter) | [Next: Developer API](Developer-API)
+| ← Previous | Next → |
+|:---|---:|
+| [**DeluxeMenus Converter**](DeluxeMenus-Converter) | [**Developer API**](Developer-API) |

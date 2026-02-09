@@ -1,4 +1,10 @@
+> 🎨 **CREATING GUIS**
+
 # Creating GUIs
+
+*Define custom inventory menus with YAML configuration*
+
+---
 
 GUIs in GUIPlus are defined as YAML files inside the `plugins/GUIPlus/CustomGuis/` folder. Each file represents one GUI menu.
 
@@ -242,4 +248,6 @@ scenes:
 
 ---
 
-[Previous: Configuration](Configuration) | [Next: Scenes](Scenes)
+| ← Previous | Next → |
+|:---|---:|
+| [**Configuration**](Configuration) | [**Scenes**](Scenes) |

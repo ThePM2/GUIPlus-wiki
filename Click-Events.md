@@ -1,4 +1,10 @@
+> 🎨 **CREATING GUIS**
+
 # Click Events
+
+*Actions that execute when a player clicks an item in a GUI*
+
+---
 
 Click events are actions that execute when a player clicks an item in a GUI. Each item can have multiple click events that execute in sequence.
 
@@ -562,4 +568,6 @@ Scenes also support their own `open-events` section — see [Scenes](Scenes) for
 
 ---
 
-[Previous: Scenes](Scenes) | [Next: Conditions](Conditions)
+| ← Previous | Next → |
+|:---|---:|
+| [**Scenes**](Scenes) | [**Conditions**](Conditions) |

@@ -1,4 +1,10 @@
+> 🔌 **INTEGRATIONS**
+
 # PlaceholderAPI Placeholders
+
+*Dynamic content and custom GUIPlus placeholders*
+
+---
 
 GUIPlus integrates with [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) to provide dynamic content in GUIs and registers its own custom placeholders.
 
@@ -103,4 +109,6 @@ item-lore:
 
 ---
 
-[Previous: Custom Heads & Skulls](Custom-Heads-and-Skulls) | [Next: BungeeCord Support](BungeeCord-Support)
+| ← Previous | Next → |
+|:---|---:|
+| [**Custom Heads & Skulls**](Custom-Heads-and-Skulls) | [**BungeeCord Support**](BungeeCord-Support) |

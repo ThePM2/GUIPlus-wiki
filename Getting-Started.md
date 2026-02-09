@@ -1,4 +1,10 @@
+> ⚙ **GETTING STARTED**
+
 # Getting Started
+
+*Install GUIPlus and create your first GUI menu*
+
+---
 
 ## Installation
 
@@ -94,4 +100,6 @@ Then reload with `/gui reload` and open it with `/gui open mygui` or `/mymenu`.
 
 ---
 
-[Previous: Home](Home) | [Next: Commands & Permissions](Commands-and-Permissions)
+| ← Previous | Next → |
+|:---|---:|
+| [**Home**](Home) | [**Commands & Permissions**](Commands-and-Permissions) |

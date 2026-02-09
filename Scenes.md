@@ -1,4 +1,10 @@
+> 🎨 **CREATING GUIS**
+
 # Scenes
+
+*Create multi-page GUIs with independent layouts*
+
+---
 
 Scenes allow you to create multi-page GUIs within a single menu. Each scene has its own independent item layout and can be navigated using click events.
 
@@ -182,4 +188,6 @@ scenes:
 
 ---
 
-[Previous: Creating GUIs](Creating-GUIs) | [Next: Click Events](Click-Events)
+| ← Previous | Next → |
+|:---|---:|
+| [**Creating GUIs**](Creating-GUIs) | [**Click Events**](Click-Events) |

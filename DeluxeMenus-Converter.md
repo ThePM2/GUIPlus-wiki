@@ -1,4 +1,10 @@
+> 🔌 **INTEGRATIONS**
+
 # DeluxeMenus Converter
+
+*Automatically migrate from DeluxeMenus to GUIPlus*
+
+---
 
 GUIPlus includes a built-in converter that automatically migrates your existing DeluxeMenus configuration files to GUIPlus format.
 
@@ -47,4 +53,6 @@ Complex DeluxeMenus features that have no direct equivalent in GUIPlus may need 
 
 ---
 
-[Previous: BungeeCord Support](BungeeCord-Support) | [Next: FAQ & Troubleshooting](FAQ-and-Troubleshooting)
+| ← Previous | Next → |
+|:---|---:|
+| [**Plugin Integrations**](Plugin-Integrations) | [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting) |

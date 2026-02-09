@@ -1,4 +1,10 @@
+> ⚙ **GETTING STARTED**
+
 # Configuration
+
+*Every config.yml option explained*
+
+---
 
 The main configuration file is located at `plugins/GUIPlus/config.yml`. Below is every option explained.
 
@@ -162,4 +168,6 @@ Customize the main plugin command name, its aliases, and description. You can al
 
 ---
 
-[Previous: Commands & Permissions](Commands-and-Permissions) | [Next: Creating GUIs](Creating-GUIs)
+| ← Previous | Next → |
+|:---|---:|
+| [**Commands & Permissions**](Commands-and-Permissions) | [**Creating GUIs**](Creating-GUIs) |

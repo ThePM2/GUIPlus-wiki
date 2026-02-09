@@ -1,4 +1,10 @@
+> 🎨 **CREATING GUIS**
+
 # Conditions
+
+*Control item visibility and click event execution*
+
+---
 
 Conditions control whether an item is shown to a player and whether click events are allowed to execute. If a condition fails, the item is hidden (or replaced by a nested fallback item), and the `conditionFailMessage` is shown.
 
@@ -290,4 +296,6 @@ Sorting groups allow items to serve as fallbacks for each other. If the primary 
 
 ---
 
-[Previous: Click Events](Click-Events) | [Next: Chat Fetcher](Chat-Fetcher)
+| ← Previous | Next → |
+|:---|---:|
+| [**Click Events**](Click-Events) | [**Chat Fetcher**](Chat-Fetcher) |

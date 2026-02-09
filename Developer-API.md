@@ -1,4 +1,10 @@
+> 💻 **FOR DEVELOPERS**
+
 # Developer API
+
+*Create and manage GUIs programmatically with the Java API*
+
+---
 
 GUIPlus provides a public API for developers to create and manage GUIs programmatically, register custom click events and conditions, and interact with the player data system.
 
@@ -320,4 +326,6 @@ softdepend: [GUIPlus]
 
 ---
 
-[Previous: FAQ & Troubleshooting](FAQ-and-Troubleshooting) | [Home](Home)
+| ← Previous | Next → |
+|:---|---:|
+| [**FAQ & Troubleshooting**](FAQ-and-Troubleshooting) | [**Tutorials**](Tutorials) |

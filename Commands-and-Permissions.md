@@ -1,4 +1,10 @@
+> ⚙ **GETTING STARTED**
+
 # Commands & Permissions
+
+*All commands and permission nodes for GUIPlus*
+
+---
 
 > **Tip:** All commands support tab-completion for GUI names and player names.
 
@@ -67,4 +73,6 @@ Players can then use `/shop` to open the GUI directly. The `guiplus.gui.open.oth
 
 ---
 
-[Previous: Getting Started](Getting-Started) | [Next: Configuration](Configuration)
+| ← Previous | Next → |
+|:---|---:|
+| [**Getting Started**](Getting-Started) | [**Configuration**](Configuration) |

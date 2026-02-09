@@ -1,4 +1,10 @@
+> 💬 **INTERACTIVE**
+
 # Player Data
+
+*Save, retrieve, and manipulate per-player data fields*
+
+---
 
 GUIPlus includes a built-in player data storage system that lets you save, retrieve, and manipulate per-player data fields. This enables features like bank balances, kill counters, quest progress, and any custom data you need.
 
@@ -177,4 +183,6 @@ scenes:
 
 ---
 
-[Previous: Chat Fetcher](Chat-Fetcher) | [Next: Custom Heads & Skulls](Custom-Heads-and-Skulls)
+| ← Previous | Next → |
+|:---|---:|
+| [**Chat Fetcher**](Chat-Fetcher) | [**Custom Heads & Skulls**](Custom-Heads-and-Skulls) |
