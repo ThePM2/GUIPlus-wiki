@@ -2,222 +2,143 @@
 
 # FAQ & Troubleshooting
 
-*Common questions and solutions for GUIPlus*
+*Answers to common setup and menu questions.*
 
 ---
 
 ## 💡 Frequently Asked Questions
 
-### How do I create a new GUI?
+### Where should I start?
 
-There are two ways:
+Run `/rewards` to try the included practical menus, or `/gui` to create your own. Existing installations can add the missing practical menus with `/gui practical install`. See [Getting Started](Getting-Started.md).
 
-1. **In-Game Editor:** Run `/gui` to open the management menu, then create a new GUI through the editor interface.
-2. **YAML File:** Create a new `.yml` file in `plugins/GUIPlus/CustomGuis/` and define your GUI structure. See [Creating GUIs](Creating-GUIs.md).
+### Do the daily rewards require a login streak?
 
-### How do I reload my changes?
+No. Players claim in the menu. The first daily reward is ready immediately; the default wait is 24 hours after a successful claim. Missing a day preserves progress. See [Ready-to-Use Rewards](Ready-to-Use-Rewards.md).
 
-Run `/gui reload` to reload all GUI configurations and plugin settings. This does not require a server restart.
+### How do I change what the player actually receives?
 
-### Can I use PlaceholderAPI placeholders?
+Use `/gui practical edit` for the included rewards. Changing the item in a menu changes its appearance, not the real prize bundle. **Apply & save all rewards** saves the catalog; existing claims and running daily deadlines are preserved.
 
-Yes. GUIPlus fully supports PlaceholderAPI. Any PAPI placeholder can be used in item names, lore, click event parameters, and condition values. See [PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders.md).
+### How do I change the same button in several menus?
 
-### How do I make items visible only to certain players?
+Create a template with `/gui components`, then explicitly link the relevant items. Set local name or lore overrides where needed. After applying a shared change, reopen the affected menus. See [Shared Components](Shared-Components.md).
 
-Use [conditions](Conditions.md) on items. For example, to show an item only to players with a specific permission:
+### How do I create a Locked or Owned button?
+
+Use **Button States** in the item editor. Owned and Ready need visibility requirements; Locked is the fallback. For a starting point, install `/gui examples progression my_progress`. See [Button States](Button-States.md).
+
+### Can I ask for several answers before running a command?
+
+Add an **Interaction Flow**. Fields can use chat input or clickable choices. Put effects that need confirmation under **Confirmed actions**. Back edits an answer; Cancel grants nothing. See [Interaction Flows](Interaction-Flows.md).
+
+### How do I keep player input within a range?
+
+Use [Input Rules](Input-Rules.md) on a chat fetcher or flow field. For example, choose `INTEGER` with `input-min: 1` and `input-max: 64`. A numeric format check alone does not impose a positive range.
+
+### How do I make an item visible only to VIPs?
+
+Use `showConditions` on the item. Add the same permission to `conditions` when it must also protect execution:
 
 ```yaml
+showConditions:
+  has-permission:
+    permission: myserver.vip
 conditions:
   has-permission:
     permission: myserver.vip
-conditionFailMessage: §cVIP only!
+conditionFailMessage: '&cVIP only!'
 ```
 
-### How do I create a multi-page menu?
+For an entire menu use its root `permission`; for a scene use `open-conditions`. See [Conditions](Conditions.md).
 
-Use [scenes](Scenes.md). Each scene acts as a separate page, and players navigate between them using `next-scene-click` and `previous-scene-click` events.
+### How do I make a multi-page menu?
 
-### Can I use GUIPlus with BungeeCord/Velocity?
+Use [Scenes](Scenes.md) with `disable-scene-animation: true` and Next/Previous buttons. Leave that setting `false` for a timed sequence instead. A scene's delay holds it before the next automatic transition; it is not a delay before the first page opens.
 
-Yes. Use the `server-click-event` to send players to other servers. See [BungeeCord Support](BungeeCord-Support.md).
+### Can another plugin or an NPC open a menu?
 
-### How do I store per-player data?
+Yes. Configure it to run `gui open <id> <player>` from console, using that plugin's player-name placeholder. The menu's permissions and scene entry checks still apply to the viewer. See [Plugin Integrations](Plugin-Integrations.md).
 
-Use the `save-player-info` click event to save data and `%GUIPlus_player_info_<field>%` to retrieve it. See [Player Data](Player-Data.md).
+### How do I open a menu for another player?
 
-### Can I open GUIs from other plugins?
+`/gui open shop Alex` opens the shop on Alex's screen. `/gui openTargeted staff_panel Alex` keeps the menu on your own screen with Alex as its action target. They have different permission checks. See [Commands & Permissions](Commands-and-Permissions.md).
 
-Yes. Other plugins can use `/gui open <name> <player>` as a console command to open any GUIPlus GUI for a player. This works with any command-executing plugin.
+### Does the warp catalog replace EssentialsX?
 
-### How do I open a GUI for another player?
+No. EssentialsX supplies the warp names and handles permissions, fees and teleport timing. GUIPlus generates the catalog, pages and search. Use `/gui warps` to edit it and `/guiplus-warps` to browse. See [Warp Catalogs](Warp-Catalogs.md).
 
-Use `/gui open <name> <player>` (requires `guiplus.gui.open` permission) or `/gui openTargeted <name> <player>` (requires `guiplus.gui.open.targeted` permission). For command aliases (e.g., `/shop PlayerName`), the `guiplus.gui.open.others` permission is required.
+### Which placeholders need PlaceholderAPI?
 
-### How do I convert from DeluxeMenus?
+Other plugins' placeholders need PlaceholderAPI and the relevant expansions. Ordinary display of `%GUIPlus_player_info_<field>%` also uses its expansion. Built-in practical reward tokens work without it, as do flow/state/component parameters within their own scope. See [PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders.md).
 
-Place your DeluxeMenus files in `plugins/GUIPlus/DeluxeMenus/` and restart. See [DeluxeMenus Converter](DeluxeMenus-Converter.md).
+### How do I show the cooldown time left?
 
-### How do I add sound effects to buttons?
-
-Use the `sound-click-event` click event alongside your other events. Sounds play at the player's location:
-
-```yaml
-click-events:
-  sound-click-event:
-    sound: UI_BUTTON_CLICK
-    volume: 1.0
-    pitch: 1.0
-  message:
-    message: §aButton clicked!
-```
-
-See [Click Events — Sound](Click-Events.md#sound) for all options.
-
-### How do I make a left-click / right-click do different things?
-
-Use the `clickType` property on each click event to restrict it to a specific mouse button:
-
-```yaml
-click-events:
-  buy-action:
-    message: §aPurchased!
-    clickType: LEFT
-  info-action:
-    message: §7This costs $500
-    clickType: RIGHT
-```
-
-Valid click types: `LEFT`, `RIGHT`, `MIDDLE`, `SHIFT_LEFT`, `SHIFT_RIGHT`, `NONE` (any click).
-
-### Can I use GUIPlus with ItemsAdder or Oraxen?
-
-Yes. Use custom model data (`item-custom-model-data`) for custom item textures, and console commands to give custom items. Font image placeholders work in item lore if the respective PAPI expansion is installed. See [Plugin Integrations](Plugin-Integrations.md) for details.
-
-### How do I open a GUI from an NPC?
-
-If using Citizens, add a command to the NPC: `/npc command add -p gui open <name>`. Any NPC plugin that supports running commands on interaction works similarly. See [Plugin Integrations](Plugin-Integrations.md).
-
-### How do I add a cooldown to a button?
-
-Use the `cooldown` condition on the item. The cooldown value is in **milliseconds**:
+Use `%cooldown_remaining_seconds%` in the item's or action's denial message:
 
 ```yaml
 conditions:
   cooldown:
     cooldown: 60000
-    id: my-cooldown
+    id: information_button
+conditionFailMessage: '&cTry again in %cooldown_remaining_seconds%s.'
 ```
 
-This prevents the item from being clicked more than once per 60 seconds. See [Conditions — Cooldown](Conditions.md#cooldown).
+The duration above is in milliseconds. The remaining value is rounded up to whole seconds and comes from the cooldown that actually failed. See [Conditions](Conditions.md).
 
-### Are there premade GUI templates I can use?
+### Can I use MiniMessage or a custom title font?
 
-Yes. See [Premade Configurations](Premade-Configurations.md) for ready-to-use templates including server rules, gamemode selectors, social links menus, daily rewards, and more.
+Use `title-format: MINIMESSAGE` on Paper. A custom font also needs the matching client resource pack. The default title mode is LEGACY; changing it does not convert item lore or every message to rich text. See [Creating GUIs](Creating-GUIs.md#minimessage-inventory-titles).
 
----
+### Can I use custom items or proxy servers?
+
+Copy a held item's supported metadata in the editor, or configure another plugin's give command. Custom textures need that plugin's resource pack. Proxy transfers use the BungeeCord plugin-messaging channel; see [Custom Heads & Skulls](Custom-Heads-and-Skulls.md), [Plugin Integrations](Plugin-Integrations.md) and [BungeeCord Support](BungeeCord-Support.md).
 
 ## 🔧 Troubleshooting
 
-### GUI doesn't open
+### GUI does not open
 
-- Check that the player has the `guiplus.gui.open` permission
-- Verify the GUI ID matches exactly (case-sensitive)
-- Check console for errors after running `/gui reload`
-- Ensure the GUI file has valid YAML syntax (use a YAML validator if unsure)
+- Check the console after `/gui reload` and make sure the requested menu ID exists.
+- Check the command permission, menu permission and scene `open-conditions` separately.
+- Use `/gui open <id>` to distinguish a menu problem from an alias owned by another plugin.
+- Use valid YAML with unique keys and registered action/condition types. A custom label needs `type` or `condition`.
 
-### Items not showing
+### An item is missing or shows a barrier
 
-- Verify the material name is a valid Minecraft material (e.g., `DIAMOND_SWORD`, not `diamond sword`)
-- Check if the item has conditions that the player doesn't meet
-- Ensure the `slot` number is within the GUI's size range
-- Check for YAML indentation errors in the item definition
+Check its material, slot, `showConditions`, nested fallback and sorting group. A missing shared component is unavailable; it does not run the old item's fallback actions. Repair the link or detach a valid resolved copy, then reopen the menu.
 
-### Placeholders not updating
+### A click does nothing
 
-- Verify PlaceholderAPI is installed and running
-- Check that the placeholder expansion is installed (e.g., run `/papi ecloud download Player`)
-- Ensure the placeholder format is correct: `%placeholder_name%`
+Check item/action `conditions`, `clickType`, required integrations and the console error. An opening glow effect is not an ordinary click action. For flows, effects belong inside Confirmed actions. See [Click Events](Click-Events.md).
 
-### Click events not working
+### A placeholder stays as text
 
-- Ensure the click event ID is correct (see [Click Events](Click-Events.md))
-- Check if there's a `clickType` restriction that doesn't match how the player is clicking
-- If using `has-money` or other economy events, verify Vault and an economy plugin are installed
-- Check the console for error messages when clicking
+Check its spelling and where it is supported. Install PlaceholderAPI and the correct expansion for external tokens. A `%flow_name%` value is available to that flow's confirmed actions, not unrelated later actions. Dynamic text uses `gui-settings.update-delay`.
 
-### Chat fetcher not responding
+### Chat input is not accepted
 
-- Make sure `disable-commands-chat-fetcher` and `disable-guis-chat-fetcher` are set correctly in `config.yml`
-- Players can type `exit` to cancel the chat fetcher
-- Check the `conditionFailMessage` — input validation might be failing silently
+Check the input type, bounds and maximum length, then the configured conditions. Type `exit` to leave a normal prompt; a flow returns to its field screen. Save or cancel existing input before opening another menu. See [Chat Fetcher](Chat-Fetcher.md).
 
-### Skull textures not displaying
+### A reward cannot be claimed
 
-- Verify the Base64 string is complete and valid
-- For `%self_base64%`, ensure PlaceholderAPI is installed
-- The item material must be `PLAYER_HEAD`
+Check the entire bundle fits in the player's inventory, the timer or playtime requirement, and whether that UUID has already claimed it. Menu copies share the same reward progress. If the console reports a pending receipt, inspect saved player inventory before using the recovery commands in [Ready-to-Use Rewards](Ready-to-Use-Rewards.md).
 
-### Plugin not loading
+### A warp is missing or the teleport is refused
 
-- Check that you're running Java 17 or higher
-- Verify your server is running Spigot or Paper 1.16+
-- Check the console for error messages during startup
-- Ensure the JAR file is not corrupted (re-download if needed)
+Check EssentialsX's normal `/warp` command as the same non-OP player, its permissions and the supported name format. The catalog's refresh uses a two-second source cache; clicking a warp rechecks it. GUIPlus does not bypass EssentialsX fees or delays.
 
-### Config changes not applying
+### My edit screen expired
 
-- Use `/gui reload` after making changes
-- Some settings (like command aliases in `config.yml`) require a full server restart
-- Verify your YAML syntax — a single indentation error can break the entire file
+Reopen it after a reload, external file change or another accepted revision. An old screen cannot overwrite the newer definition. Save/cancel an in-game draft before editing its file by hand.
 
-### Performance issues
+### The plugin does not load
 
-- Reduce the number of placeholders in item lore (each is evaluated every second)
-- Avoid using many open GUIs simultaneously with dynamic content
-- Keep individual GUIs focused — split large menus into separate GUIs linked by commands
-- See [Tips & Best Practices — Performance](Tips-and-Best-Practices.md#performance) for detailed optimization guidance
+Use Java 21 or newer and your server's required version: Paper 26.x needs Java 25 or newer. Check the startup error and repository access for first-start library downloads. V4's server profiles are Paper/Spigot 1.21.11 and Paper 26.3; Folia is unsupported.
 
-### Economy events not working (money-give, money-remove, has-money)
+### A saved item cannot be read after a downgrade
 
-- Verify **Vault** is installed and loaded (check `/plugins`)
-- Verify you have an economy plugin installed (EssentialsX, CMI, etc.)
-- Check that Vault is detecting your economy plugin: look for `[Vault] Hooking` messages in the startup log
-- If using `has-money` with a placeholder value (e.g., `'%input%'`), make sure the value resolves to a valid number
-
-### Chat fetcher closes but nothing happens
-
-- Check that the nested `click-events` inside the `chat-fetcher` are correctly indented under the chat fetcher block
-- Verify your conditions — if any condition fails, the `conditionFailMessage` is shown and nested events don't execute
-- Check the console for errors after entering input
-- Make sure the `%input%` placeholder is correctly placed in your nested events
-
-### Items flickering or disappearing
-
-- This usually happens when conditions are evaluated and items alternate between showing and hiding
-- Check that condition values (especially placeholder-based ones) return stable results
-- Ensure your YAML indentation is correct — misplaced conditions can cause unexpected behavior
-
-### Command alias not registering
-
-- Command aliases defined via `commandAlias` require a **full server restart** (not just `/gui reload`)
-- Check that no other plugin is already using the same command name
-- Verify the alias in the GUI file is a simple string without spaces or special characters
-
----
+Return to the matching server/plugin version or restore its matching backup. Do not replace an unreadable storage file with an empty one. See [Updating & Backups](Updating-and-Backups.md).
 
 ## 🆘 Getting Help
 
-If you're still having issues:
-
-1. Enable `show-stacktrace: true` in `config.yml` for detailed error messages
-2. Enable `debug.enabled: true` for verbose logging
-3. Check the console output after reproducing the issue
-4. Review [Tips & Best Practices](Tips-and-Best-Practices.md) for common pitfalls
-5. Join the plugin's Discord server for community support
-
----
-
-| ← Previous | Next → |
-|:---|---:|
-| [**Tips & Best Practices**](Tips-and-Best-Practices.md) | [**Developer API**](Developer-API.md) |
+Include the GUIPlus version, server build, Java version, relevant console message and a small menu example. Mention whether the problem occurs for an operator, an ordinary player or both. Remove private commands or personal data before posting a configuration publicly.

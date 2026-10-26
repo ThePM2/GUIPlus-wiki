@@ -2,184 +2,146 @@
 
 # Player Data
 
-*Save, retrieve, and manipulate per-player data fields*
+*Save named values for each player's UUID*
 
 ---
 
-GUIPlus includes a built-in player data storage system that lets you save, retrieve, and manipulate per-player data fields. This enables features like bank balances, kill counters, quest progress, and any custom data you need.
+GUIPlus stores custom fields in `plugins/GUIPlus/playerData.yml`, under the player's UUID. Use them for progression, choices, counters and other menu data. Menu copies using the same field names read the same per-player values.
 
-## ⚙ How It Works
-
-Player data is stored in `plugins/GUIPlus/playerData.yml`, keyed by player UUID. Each player can have any number of custom fields with string or numeric values.
-
-### Storage Format
+## 📐 Stored Fields
 
 ```yaml
-d290a6cf-1234-5678-90ab-cdef12345678:
-  deposited: 1500
-  kills: 25
-  rank: gold
-  custom-note: Hello World
+'d290a6cf-1234-5678-90ab-cdef12345678':
+  points: '100'
+  rank: 'gold'
+  custom-note: 'Hello World'
 ```
+
+The UUID identifies the player; the field name identifies the value. Prefer clear names such as `quest_points` or `myserver_rank`. GUI IDs, scene IDs and item IDs are separate from player-data fields. Renaming a menu does not rename its player data.
 
 ## 💾 Saving Data
 
-Use the `save-player-info` click event to save data fields:
+Add the `save-player-info` action. `save-format` contains `field:value` pairs separated by commas:
 
 ```yaml
 click-events:
   save-player-info:
-    save-format: field:value
+    save-format: 'rank:literal:vip,points:number:100'
 ```
 
-### Format
+The action writes to the actual target, normally the viewer. Multiple fields in one action are saved together; a failed update does not publish a partial set.
 
-The `save-format` uses the pattern: `field1:value1,field2:value2`
+### Explicit Value Formats
 
-Multiple fields can be saved at once by separating them with commas.
-
-### Setting a Static Value
+| Prefix | Purpose | Example |
+|--------|---------|---------|
+| `literal:` | Keep text and punctuation | `note:literal:part-time` |
+| `number:` | Validate and normalize a number | `points:number:100.00` |
+| `calc:` | Evaluate arithmetic | `total:calc:2+3` |
 
 ```yaml
 click-events:
   save-player-info:
-    save-format: rank:vip
+    save-format: 'note:literal:part-time,date:literal:2026-10-26,total:calc:2+3'
 ```
 
-### Math Operations
+Without a prefix, ordinary text remains text: `2+3` is not automatically a calculation. Older arithmetic templates containing placeholders still work, but explicit prefixes make new definitions clearer. Player-entered text does not become arithmetic merely because it contains `+` or `-`.
 
-You can perform arithmetic on existing values. The expression evaluator supports a full range of operations:
+Commas separate entries and cannot be escaped inside a value. A colon after the field name stays in that value, making the format prefixes possible.
 
-**Basic Operators:**
+### Calculations
 
-| Operator | Description | Example |
-|----------|-------------|---------|
-| `+` | Addition | `10+5` = 15 |
-| `-` | Subtraction | `10-5` = 5 |
-| `*` | Multiplication | `10*5` = 50 |
-| `/` | Division | `10/5` = 2 |
-| `^` | Exponentiation | `2^3` = 8 |
+`calc:` supports `+`, `-`, `*`, `/`, `^`, parentheses, and `sqrt()`, `sin()`, `cos()` and `tan()`. Trigonometric inputs use degrees. Calculations must produce a finite number.
 
-**Functions:**
-
-| Function | Description | Note |
-|----------|-------------|------|
-| `sqrt(x)` | Square root | `sqrt(16)` = 4 |
-| `sin(x)` | Sine | Input in degrees |
-| `cos(x)` | Cosine | Input in degrees |
-| `tan(x)` | Tangent | Input in degrees |
-
-Parentheses `()` are supported for grouping: `(2+3)*4` = 20.
-
-```yaml
-# Add 100 to the existing 'deposited' value
-click-events:
-  save-player-info:
-    save-format: deposited:%input%+%GUIPlus_player_info_deposited%
-```
-
-```yaml
-# Increment kills by 1
-click-events:
-  save-player-info:
-    save-format: kills:1+%GUIPlus_player_info_kills%
-```
-
-```yaml
-# Subtract from balance
-click-events:
-  save-player-info:
-    save-format: deposited:%GUIPlus_player_info_deposited%-%input%
-```
-
-### Saving Multiple Fields
+To initialize and then change a counter:
 
 ```yaml
 click-events:
-  save-player-info:
-    save-format: kills:%GUIPlus_player_info_kills%+1,last-kill-time:now
+  initialize:
+    type: save-player-info
+    save-format: 'points:number:0'
 ```
 
-## 📖 Retrieving Data
+```yaml
+click-events:
+  increment:
+    type: save-player-info
+    save-format: 'points:calc:%GUIPlus_player_info_points%+1'
+```
 
-Use the `%GUIPlus_player_info_<field>%` placeholder to display saved data anywhere in your GUIs:
+Reading an existing field through the PlaceholderAPI token in this action requires PlaceholderAPI. Initialize the field first: an unset value is `null`, not zero. Unresolved or invalid calculations stop rather than saving a corrupted result.
+
+Within one `save-player-info` action, later entries can reference fields already set by that same action:
 
 ```yaml
+save-format: 'base:number:10,total:calc:%GUIPlus_player_info_base%+5'
+```
+
+## 📖 Reading Data
+
+With PlaceholderAPI installed, use `%GUIPlus_player_info_<field>%` in ordinary item names and lore:
+
+```yaml
+item-name: '&6Your Profile'
 item-lore:
-  - §7Bank Balance: §a$%GUIPlus_player_info_deposited%
-  - §7Total Kills: §c%GUIPlus_player_info_kills%
-  - §7Rank: §e%GUIPlus_player_info_rank%
+  - '&7Points: &e%GUIPlus_player_info_points%'
+  - '&7Rank: &a%GUIPlus_player_info_rank%'
 ```
 
-If a field has not been set for a player, the placeholder returns the string `null`.
+An unset field returns the text `null`. GUIPlus also resolves its own player-info tokens locally in `conditional-placeholder` conditions and [Button States](Button-States.md) display text, so those uses do not require PlaceholderAPI.
 
-## 🛒 Full Example: Point Shop
+Conditions inspect the viewer's fields, even if the menu has a different action target. See [PlaceholderAPI Placeholders](PlaceholderAPI-Placeholders.md) for each token's context.
+
+## 🔒 Progression Example
+
+This item is visible to everyone, but its click requires the viewer to have at least 50 saved points. It only sends information; it does not spend the points.
 
 ```yaml
-id: pointshop
-rows: 3
-type: chest
-title: §5Point Shop
-commandAlias: pointshop
-scenes:
-  '0':
-    delay: 0
-    items:
-      '1':
-        slot: 4
-        item: PLAYER_HEAD
-        amount: 1
-        item-name: §d§lYour Points
-        item-lore:
-          - ''
-          - §7You have §d%GUIPlus_player_info_points%§7 points
-          - ''
-        skullBase64: '%self_base64%'
-      '2':
-        slot: 11
-        item: DIAMOND_SWORD
-        amount: 1
-        item-name: §cWarrior Kit
-        item-lore:
-          - ''
-          - §7Cost: §d50 points
-          - ''
-          - §eClick to purchase
-        conditions:
-          conditional-placeholder:
-            conditional_condition: '%GUIPlus_player_info_points%>=50'
-        conditionFailMessage: §cYou need at least 50 points!
-        click-events:
-          save-player-info:
-            save-format: points:%GUIPlus_player_info_points%-50
-          console_command:
-            commands:
-              - give %player% diamond_sword 1
-          message:
-            message: §aPurchased Warrior Kit for 50 points!
-      '3':
-        slot: 15
-        item: GOLDEN_APPLE
-        amount: 5
-        item-name: §6Healing Bundle
-        item-lore:
-          - ''
-          - §7Cost: §d25 points
-          - ''
-          - §eClick to purchase
-        conditions:
-          conditional-placeholder:
-            conditional_condition: '%GUIPlus_player_info_points%>=25'
-        conditionFailMessage: §cYou need at least 25 points!
-        click-events:
-          save-player-info:
-            save-format: points:%GUIPlus_player_info_points%-25
-          console_command:
-            commands:
-              - give %player% golden_apple 5
-          message:
-            message: §aPurchased Healing Bundle for 25 points!
+'1':
+  slot: 13
+  item: DIAMOND
+  item-name: '&bProgress Check'
+  conditions:
+    enough-points:
+      condition: conditional-placeholder
+      conditional_condition: '%GUIPlus_player_info_points%>=50'
+  conditionFailMessage: '&cYou need at least 50 points.'
+  click-events:
+    message:
+      message: '&aYou meet the progression requirement.'
 ```
+
+Use `showConditions` instead of `conditions` when the goal is to hide an item. For Locked / Ready / Owned appearances, start with [Button States](Button-States.md) or `/gui examples progression my_progress`.
+
+## 🏦 Bank Balances
+
+For money moving between Vault and a recorded field, use `bank-transfer`, rather than composing independent `money-remove`, `save-player-info` and `money-give` actions:
+
+```yaml
+click-events:
+  bank-transfer:
+    direction: WITHDRAW
+    field: deposited
+    amount: '%input%'
+```
+
+See [Chat Fetcher](Chat-Fetcher.md#bank-deposit-example) for a bounded amount prompt. Vault and a working economy provider are required.
+
+An interrupted or uncertain provider payment remains blocked for review. `/guiplus-transactions list` and `show <id>` inspect operations. After checking provider records, `confirm-success <id> <evidence>` or `confirm-failure <id> <evidence>` reconciles the local ledger without repeating the payment. Use one evidence token, such as `ticket-123`.
+
+`/guiplus-transactions refunds` lists unresolved refunds. `resolve-refund <id> <evidence>` records a verified manual recovery and sends no items or money. All these commands require `guiplus.transactions`.
+
+Generic command lists do not make a cross-plugin purchase atomic. A command being dispatched also does not prove a rank or reward was delivered.
+
+## 🎁 Practical Reward Progress
+
+[Ready-to-Use Rewards](Ready-to-Use-Rewards.md) uses stable reward IDs and the `guiplus_practical_v1` namespace under each player's UUID. Daily waits, completed playtime milestones and the one starter choice survive menu copies and layout edits.
+
+Edit actual prizes through `/gui practical edit`. Avoid changing internal reward progress by hand. Use the documented receipt commands when a claim requires reconciliation.
+
+## 🗂 Backups and Manual Changes
+
+Back up `playerData.yml` with normal Minecraft player data, the practical reward catalog and bank/refund journals. When repairing custom fields manually, stop the server first, or run `/gui reload` immediately after saving the file so the live copy cannot overwrite the edit. Reload also closes existing editing/input sessions.
 
 ---
 

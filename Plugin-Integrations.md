@@ -2,365 +2,314 @@
 
 # Plugin Integrations
 
-*How GUIPlus works with popular Minecraft plugins*
+*Connect menus to economy, permissions, custom items and other server plugins*
 
 ---
 
-GUIPlus integrates with a wide range of plugins through PlaceholderAPI placeholders, Vault economy, and command execution. This page documents how to set up and use GUIPlus with popular plugins.
+GUIPlus connects to other plugins in several ways. A direct integration uses a provider API; a command or placeholder example uses the commands or PlaceholderAPI data supplied by another plugin. Installing GUIPlus does not install those providers or grant their permissions.
+
+| Connection | What GUIPlus provides |
+|---|---|
+| Vault | Economy actions, balance conditions and bank workflows through an active economy provider |
+| PlayerPoints | A points requirement and a points-removal action when PlayerPoints is available |
+| PlaceholderAPI | External placeholders in supported menu text and conditions |
+| HeadDatabase | Head IDs in `skullBase64` and the item editor |
+| EssentialsX warp catalog | An automatic warp browser with EssentialsX teleport rules |
+| Proxy plugin messaging | The `server-click-event` action through the `BungeeCord` channel |
+| Other plugin commands | Player or console command dispatch using configured command text |
 
 ## 💰 Vault & Economy Plugins
 
-**Required for:** `money-give`, `money-remove`, `money-set`, `has-money` condition
+**Required for:** `money-give`, `money-remove`, `money-set`, `has-money` and Vault-backed bank transfers.
 
-GUIPlus uses [Vault](https://www.spigotmc.org/resources/vault.34315/) as a bridge to any economy plugin. Install Vault plus one of these:
+Install [Vault](https://www.spigotmc.org/resources/vault.34315/) and an economy plugin that registers a Vault economy provider, such as EssentialsX Economy. Vault by itself does not provide balances. GUIPlus detects the active provider automatically.
 
-| Economy Plugin | Notes |
-|---------------|-------|
-| EssentialsX | Most common, works out of the box |
-| CMI Economy | Included with CMI |
-| PlayerPoints | Supported natively with `player-points-remove` click event |
+### Example: Fixed-Price Native Item
 
-### Setup
-
-1. Install Vault and your economy plugin
-2. No GUIPlus configuration needed — Vault is detected automatically
-
-### Example: Shop Item
+This item fragment charges $500 before delivering an ordinary sword through GUIPlus. The displayed icon can be configured separately.
 
 ```yaml
 conditions:
   has-money:
     required-balance: 500
-conditionFailMessage: §cYou need $500!
+  has-empty-slots:
+    free-slots: 1
+conditionFailMessage: '&cYou need $500 and one empty inventory slot.'
 click-events:
   money-remove:
     amount: 500
-  console_command:
-    commands:
-      - give %player% diamond_sword 1
+  custom-item-give:
+    item:
+      type: DIAMOND_SWORD
+      amount: 1
   message:
-    message: §aPurchased for $500!
+    message: '&aPurchased a Diamond Sword for $500!'
 ```
+
+Use [Player Data](Player-Data.md) for GUIPlus deposits and withdrawals. For shop commands supplied by another plugin, prefer that plugin's own purchase command when it handles charging and delivery together. A GUIPlus action list cannot make an arbitrary external command and economy operation share one transaction.
+
+---
+
+## 💎 PlayerPoints
+
+PlayerPoints is a separate points integration. It is not a Vault economy provider merely because it is installed.
+
+```yaml
+conditions:
+  player-points:
+    amount: 100
+conditionFailMessage: '&cYou need 100 points.'
+click-events:
+  player-points-remove:
+    amount: 100
+  custom-item-give:
+    item:
+      type: EMERALD
+      amount: 1
+```
+
+Install and enable PlayerPoints before loading a GUI that uses these types. They are registered only when that integration is available. `%GUIPlus_player_info_points%` reads a GUIPlus custom field; it is not the PlayerPoints balance.
 
 ---
 
 ## 🔑 LuckPerms
 
-**Used for:** Permission-based conditions, rank display in lore
-
-[LuckPerms](https://luckperms.net/) is the most popular permissions plugin. GUIPlus works with it through permission conditions and PlaceholderAPI.
-
-### Display Rank in GUI
-
-Install the LuckPerms PAPI expansion: `/papi ecloud download LuckPerms`
-
-```yaml
-item-lore:
-  - §7Rank: §f%luckperms_primary_group%
-  - §7Prefix: %luckperms_prefix%
-```
+[LuckPerms](https://luckperms.net/) supplies permissions through Bukkit, which GUIPlus's `has-permission` condition checks. No special GUIPlus LuckPerms hook is required.
 
 ### Permission-Based Items
 
-Show items only to specific ranks:
+Grant an explicit node such as `server.vip` to the intended group. `showConditions` hides the button; `conditions` guards the click:
 
 ```yaml
+showConditions:
+  has-permission:
+    permission: server.vip
 conditions:
   has-permission:
-    permission: group.vip
-conditionFailMessage: §cVIP only!
+    permission: server.vip
+conditionFailMessage: '&cVIP only!'
 ```
 
-### Rank-Specific Menus
+For a visible locked appearance, see [Button States](Button-States.md).
 
-Create different menu experiences per rank by using conditions on items. VIP players see upgraded items while regular players see defaults. Use sorting groups (via the in-game editor) to set fallback items on the same slot.
+### Rank Display
+
+With PlaceholderAPI and the matching LuckPerms placeholder provider enabled:
+
+```yaml
+item-lore:
+  - '&7Rank: &f%luckperms_primary_group%'
+  - '&7Prefix: %luckperms_prefix%'
+```
+
+Confirm that each placeholder resolves on your server before placing it in a requirement.
 
 ---
 
 ## 🧰 EssentialsX
 
-**Used for:** Warps, homes, teleportation, kits
-
-[EssentialsX](https://essentialsx.net/) provides many commands that work with GUIPlus click events.
-
-### Warp Menu
+[EssentialsX](https://essentialsx.net/) commands can be used for homes, warps and kits. These examples run commands as the clicking player, so EssentialsX controls permission, cooldown, cost and destination handling.
 
 ```yaml
 click-events:
   command:
     commands:
-      - warp mines
+      - 'essentials:warp mines'
   close-inventory: {}
 ```
 
-### Kit Selection
+Replace the command with `'essentials:home'` or `'essentials:kit starter'` for the other use cases. A command being dispatched does not prove that EssentialsX accepted it, so avoid adding unconditional messages such as “Kit received.”
 
-```yaml
-click-events:
-  console_command:
-    commands:
-      - essentials:kit starter %player%
-  message:
-    message: §aKit applied!
-```
-
-### Home Teleport
-
-```yaml
-click-events:
-  command:
-    commands:
-      - home
-  close-inventory: {}
-```
-
-### Display Player Info
-
-Install the Essentials PAPI expansion: `/papi ecloud download Essentials`
-
-```yaml
-item-lore:
-  - §7Nickname: %essentials_nickname%
-  - §7AFK: %essentials_afk%
-  - §7God Mode: %essentials_godmode%
-```
+For a menu that follows the actual warp list, open `/gui warps` and use [Warp Catalogs](Warp-Catalogs.md). That feature reads EssentialsX warps and delegates teleporting to EssentialsX rather than copying coordinates into every button.
 
 ---
 
 ## 🎨 ItemsAdder
 
-**Used for:** Custom items, custom textures, custom blocks in GUIs
+[ItemsAdder](https://www.spigotmc.org/resources/itemsadder.73355/) supplies its own custom items and resource pack. GUIPlus can display a copied custom item configured through the item editor, use placeholder text supplied by the plugin, or dispatch a configured command.
 
-[ItemsAdder](https://www.spigotmc.org/resources/itemsadder.73355/) lets you use custom items and font images in your GUIs.
-
-### Custom Items via Console Command
-
-Since GUIPlus supports any console command, you can give ItemsAdder items:
+An example command action is:
 
 ```yaml
 click-events:
   console_command:
     commands:
-      - iagive %player% custom_namespace:custom_item 1
+      - 'iagive %player% custom_namespace:custom_item 1'
 ```
 
-### Custom Font Images in Lore
+Replace the item ID and confirm the command syntax against your installed ItemsAdder version. This is command dispatch, not an ItemsAdder purchase API in GUIPlus.
 
-If you have the ItemsAdder PAPI expansion, you can use font images:
-
-```yaml
-item-lore:
-  - '%img_coin% §7Price: §a500 coins'
-  - '%img_star% §7Rarity: §6Legendary'
-```
-
-### Custom Model Data
-
-For resource pack items, use the `item-custom-model-data` property:
+For a resource-pack model defined on your server:
 
 ```yaml
 item: DIAMOND
 item-custom-model-data: 10001
 ```
 
-On Minecraft 1.21.2+, you can also use the `item-model` property:
+The item-model field is also available on supported Minecraft versions:
 
 ```yaml
 item: DIAMOND
 item-model: 'mynamespace:custom_diamond'
 ```
 
+A matching client resource pack must define that model. On versions that support custom-model-data components, use the item editor to capture the complete model data.
+
 ---
 
 ## 🎭 Oraxen
 
-**Used for:** Custom items, custom textures, glyphs
-
-[Oraxen](https://www.spigotmc.org/resources/oraxen.72448/) is similar to ItemsAdder for custom content.
-
-### Custom Items
+[Oraxen](https://www.spigotmc.org/resources/oraxen.72448/) content can be used through copied items, configured commands and placeholders supplied by its integration with PlaceholderAPI.
 
 ```yaml
 click-events:
   console_command:
     commands:
-      - oraxen give %player% custom_sword 1
+      - 'oraxen give %player% custom_sword 1'
 ```
 
-### Oraxen Glyphs in Text
-
-With the Oraxen PAPI expansion, use glyph placeholders in item names and lore:
-
-```yaml
-item-name: '%oraxen_coin% §6Premium Shop'
-```
+Replace the sample item ID and confirm the command for your installed version. For glyphs, use a placeholder provided by your Oraxen setup in a quoted `item-name` or lore line. GUIPlus does not install the glyphs or resource pack.
 
 ---
 
 ## 🛡 WorldGuard
 
-**Used for:** Region-based conditions, protected area menus
-
-While GUIPlus doesn't have built-in WorldGuard support, you can use WorldGuard's PlaceholderAPI expansion for region-aware GUIs.
-
-### Install
-
-`/papi ecloud download WorldGuard`
-
-### Region-Based Items
-
-Show items only when a player is in a specific region:
+GUIPlus has no direct WorldGuard condition. If your PlaceholderAPI setup provides a region placeholder, use it in `conditional-placeholder`. For example, with a provider that resolves `%worldguard_region_name%`:
 
 ```yaml
-conditions:
+showConditions:
   conditional-placeholder:
     conditional_condition: '%worldguard_region_name%(=)spawn'
 ```
+
+Check the provider's handling of overlapping regions and missing regions before using its result for access control. To guard an action as well, repeat the requirement under `conditions`.
 
 ---
 
 ## 🧑 Citizens / NPCs
 
-**Used for:** Opening GUIs from NPC interactions
-
-[Citizens](https://www.spigotmc.org/resources/citizens.13811/) NPCs can open GUIPlus menus when players interact with them.
-
-### Using Citizens Commands
-
-Add a command to the NPC that runs when right-clicked:
+[Citizens](https://www.spigotmc.org/resources/citizens.13811/) and other NPC plugins can open a GUI by running a command when a player interacts. Configure a **player-executed** command using the menu's alias, or:
 
 ```
-/npc select
-/npc command add -p gui open shop
+gui open shop
 ```
 
-The `-p` flag makes the player run the command. The NPC will open the `shop` GUI when clicked.
+For that command, the player needs `guiplus.gui.open` plus the menu's own permission. If your NPC plugin runs a command as console instead, pass the interacting player's name using the NPC plugin's player token:
 
-### Using Other NPC Plugins
+```
+gui open shop <interacting-player>
+```
 
-Any NPC plugin that supports running commands on interaction works with GUIPlus. Configure the NPC to run `/gui open <name>` on click.
+`<interacting-player>` above is a configuration placeholder to replace with your NPC plugin's token. NPC command setup and token syntax belong to the NPC plugin.
 
 ---
 
 ## 💬 DiscordSRV
 
-**Used for:** Displaying Discord-linked info in GUIs
-
-With [DiscordSRV](https://www.spigotmc.org/resources/discordsrv.18494/) and its PAPI expansion, you can show Discord information:
+[DiscordSRV](https://www.spigotmc.org/resources/discordsrv.18494/) information can appear in names and lore when an installed PlaceholderAPI provider exposes it. For example, if your provider resolves this token:
 
 ```yaml
 item-lore:
-  - §7Discord: §9%discordsrv_user_tag%
+  - '&7Discord: &9%discordsrv_user_tag%'
 ```
+
+GUIPlus does not link Discord accounts or send Discord messages through this example.
 
 ---
 
 ## ⚔ Towny / Factions
 
-**Used for:** Displaying faction/town info in GUIs
-
-### Towny
-
-Install the PAPI expansion: `/papi ecloud download TownyAdvanced`
+Use the placeholder provider that matches your town or faction plugin. Expansion names and tokens differ between implementations. Example lore for a provider exposing these tokens:
 
 ```yaml
 item-lore:
-  - §7Town: §a%townyadvanced_town%
-  - §7Nation: §b%townyadvanced_nation%
-  - §7Residents: §f%townyadvanced_town_residents%
+  - '&7Town: &a%townyadvanced_town%'
+  - '&7Nation: &b%townyadvanced_nation%'
 ```
-
-### Factions
-
-Install the PAPI expansion: `/papi ecloud download Factions`
 
 ```yaml
 item-lore:
-  - §7Faction: §a%factionsuuid_faction_name%
-  - §7Power: §c%factionsuuid_faction_power%
-  - §7Members: §f%factionsuuid_faction_members%
+  - '&7Faction: &a%factionsuuid_faction_name%'
+  - '&7Power: &c%factionsuuid_faction_power%'
 ```
+
+Check each token with `/papi parse me <placeholder>`. An unresolved token is text, not usable numeric data for a requirement.
 
 ---
 
 ## 💀 HeadDatabase
 
-**Used for:** Accessing custom heads from the HeadDatabase library
+[HeadDatabase](https://www.spigotmc.org/resources/head-database.14280/) is a direct optional integration. Use an available database head ID in `skullBase64`:
 
-[HeadDatabase](https://www.spigotmc.org/resources/head-database.14280/) is a soft dependency of GUIPlus. When installed, it provides access to thousands of decorative heads.
+```yaml
+item: PLAYER_HEAD
+skullBase64: 'hdb-123'
+```
 
-GUIPlus automatically integrates with HeadDatabase when it's present. You can also use Base64 textures directly — see [Custom Heads & Skulls](Custom-Heads-and-Skulls.md).
+Replace `123` with an ID available in your database. You can also paste a Base64 texture without HeadDatabase. See [Custom Heads & Skulls](Custom-Heads-and-Skulls.md) for complete examples.
 
 ---
 
 ## 🌍 Multiverse-Core
 
-**Used for:** Multi-world teleportation, world-specific GUIs
-
-[Multiverse-Core](https://www.spigotmc.org/resources/multiverse-core.390/) is a soft dependency of GUIPlus.
-
-### World Teleportation
-
-Use the teleport click event with a world name:
+[Multiverse-Core](https://www.spigotmc.org/resources/multiverse-core.390/) can load and manage worlds used by GUIPlus. Its soft-dependency entry helps load ordering; the native `teleport` action uses Bukkit coordinates rather than a Multiverse teleport command.
 
 ```yaml
 click-events:
   teleport:
-    location: world_nether
+    location: 'World: world_nether, X: 0.5, Y: 65.0, Z: 0.5, Yaw: 0.0, Pitch: 0.0'
 ```
 
-### World-Specific Conditions
+Choose a safe destination in a loaded world. A bare world name is not the saved YAML format. If you want Multiverse's own teleport behavior, dispatch its documented command instead.
 
-With the Multiverse PAPI expansion, show items based on the player's current world:
+For a world-dependent display, use an installed world placeholder provider. For example, with the Player expansion:
 
 ```yaml
-conditions:
+showConditions:
   conditional-placeholder:
-    conditional_condition: '%multiverse_world_name%=world'
+    conditional_condition: '%player_world%(=)world'
 ```
 
 ---
 
 ## 🌐 PAPIProxyBridge
 
-**Used for:** Displaying cross-server data in BungeeCord/Velocity networks
-
-[PAPIProxyBridge](https://www.spigotmc.org/resources/papiproxybridge.108415/) lets you use PlaceholderAPI across your network. Combine with [BungeeCord Support](BungeeCord-Support.md) for server selectors that show player counts.
+[PAPIProxyBridge](https://www.spigotmc.org/resources/papiproxybridge.108415/) can supply cross-server placeholders to your PlaceholderAPI setup. Use the tokens documented for your installed bridge version in menu text, then combine them with a native server action:
 
 ```yaml
-item-name: §aSurvival
+item-name: '&aSurvival'
 item-lore:
-  - ''
-  - §7Players: §a%papiproxybridge_server_online_survival%
-  - ''
-  - §eClick to join!
+  - '&7Click to join the Survival server.'
 click-events:
   server-click-event:
     server: survival
 ```
 
+The bridge supplies display data; it does not make `server-click-event` work without a correctly configured proxy. See [BungeeCord Support](BungeeCord-Support.md).
+
 ---
 
 ## 🔧 General Integration Pattern
 
-Any plugin that provides either **PlaceholderAPI placeholders** or **commands** can be used with GUIPlus:
-
-1. **Display data** — Use the plugin's PAPI placeholders in item names, lore, or conditions
-2. **Execute actions** — Use `command` or `console_command` click events to run the plugin's commands
-3. **Check requirements** — Use `conditional-placeholder` conditions with the plugin's PAPI placeholders
+1. Confirm the provider's command or placeholder works outside the GUI.
+2. Use `command` for player authority or `console_command` for console authority. Write commands without the leading `/`.
+3. Put display requirements under `showConditions`, and click requirements under `conditions`.
+4. Use explicit `type` values when giving actions your own names.
 
 ```yaml
-# Generic pattern for any plugin integration
 item-lore:
-  - §7Some Value: §f%otherplugin_placeholder%
+  - '&7Tokens: &f%otherplugin_tokens%'
 conditions:
   conditional-placeholder:
-    conditional_condition: '%otherplugin_placeholder%>=10'
+    conditional_condition: '%otherplugin_tokens%>=10'
 click-events:
-  console_command:
+  open-token-menu:
+    type: command
     commands:
-      - otherplugin command %player%
+      - 'otherplugin tokens'
 ```
+
+Replace the sample token and command with real values. Numeric comparisons reject unavailable or invalid numeric data. Unknown action or condition types also prevent the affected GUI from loading; restore the providing integration or correct the type before reloading.
 
 ---
 

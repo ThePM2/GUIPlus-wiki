@@ -2,189 +2,100 @@
 
 # Scenes
 
-*Create multi-page GUIs with independent layouts*
+*Build manual pages or timed menu sequences.*
 
 ---
 
-Scenes allow you to create multi-page GUIs within a single menu. Each scene has its own independent item layout and can be navigated using click events.
-
-> **Tip:** Scenes are zero-indexed. The first scene is `'0'`, the second is `'1'`, and so on. Each scene has completely independent items and layout.
+A scene is one layout inside a GUI. Use scenes for pages with navigation buttons, or let GUIPlus play them in sequence as an animation.
 
 ## 📐 Scene Structure
 
-Scenes are defined inside the `scenes` map of a GUI file. Scene IDs are zero-indexed strings:
+Scenes are stored under `scenes`, normally with consecutive IDs starting at `'0'`. Each scene has its own items and actions.
+
+| Property | Meaning |
+|----------|---------|
+| `items` | Items displayed in this scene. |
+| `delay` | Ticks this scene contributes before the next automatic transition. |
+| `open-conditions` | Conditions the viewer must meet to enter the scene. |
+| `open-events` | Actions run when the scene opens. |
+
+> **Note:** `open-conditions` gates the whole scene. If it fails, the scene does not open; it does not merely suppress the opening actions.
+
+## 🧭 Manual Pages
+
+Set `disable-scene-animation: true` at the menu root so pages stay open until a player navigates. This complete example creates two pages:
 
 ```yaml
-scenes:
-  '0':    # First scene (page 1)
-    delay: 0
-    items:
-      '1':
-        slot: 13
-        item: DIAMOND
-        item-name: §bPage 1
-        click-events:
-          next-scene-click: {}
-  '1':    # Second scene (page 2)
-    delay: 0
-    items:
-      '1':
-        slot: 13
-        item: EMERALD
-        item-name: §aPage 2
-        click-events:
-          previous-scene-click: {}
-```
-
-## 🏷 Scene Properties
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `delay` | Integer | Delay in ticks before this scene opens (0 = instant) |
-| `items` | Map | The items displayed in this scene |
-| `open-events` | Map | Click events that execute when this scene opens |
-| `open-conditions` | Map | Conditions that must be met for open-events to execute |
-
-## 🧭 Navigation Click Events
-
-### Next Scene
-Moves to the next scene in the sequence:
-
-```yaml
-click-events:
-  next-scene-click: {}
-```
-
-### Previous Scene
-Moves to the previous scene:
-
-```yaml
-click-events:
-  previous-scene-click: {}
-```
-
-## 📂 Scene Open Events
-
-Scenes support two ways to run events when they open:
-
-### Scene-Level Open Events
-
-Define `open-events` directly on the scene to run click events when the scene opens. These are independent of any items:
-
-```yaml
-scenes:
-  '0':
-    delay: 0
-    open-events:
-      welcome-sound:
-        sound: BLOCK_CHEST_OPEN
-      welcome-message:
-        message: §7Welcome to the shop!
-    open-conditions:
-      first-visit:
-        permission: shop.welcome
-    items:
-      '1':
-        slot: 0
-        item: DIAMOND
-```
-
-The `open-conditions` control whether the scene's `open-events` execute. If any open-condition fails, the open-events are skipped (but the scene still opens and items are displayed normally).
-
-### Item-Level Open Events (Editor)
-
-Through the in-game editor, individual click events on items can be marked with `openEvent: true` to run when the scene opens instead of on click. The `glow-at-item` click event does this automatically.
-
-## ⏱ Scene Delays
-
-Add a delay before a scene opens (in ticks, 20 ticks = 1 second):
-
-```yaml
-scenes:
-  '0':
-    delay: 0     # Opens immediately
-    items: ...
-  '1':
-    delay: 20    # Opens after 1 second
-    items: ...
-```
-
-## 🛒 Example: Multi-Page Shop
-
-```yaml
-id: shop
-rows: 6
+id: information
 type: chest
-title: §6Server Shop
-commandAlias: shop
+rows: 3
+title: '&8Server Information'
+disable-scene-animation: true
 scenes:
   '0':
     delay: 0
     items:
       '1':
-        slot: 0
-        item: DIAMOND_SWORD
-        amount: 1
-        item-name: §cWeapons
+        slot: 13
+        item: BOOK
+        item-name: '&eRules'
         item-lore:
-          - §7Price: §a$500
-          - ''
-          - §eClick to buy!
-        click-events:
-          money-remove:
-            amount: 500
-          console_command:
-            commands:
-              - give %player% diamond_sword 1
-          message:
-            message: §aPurchased!
-        conditions:
-          has-money:
-            required-balance: 500
-        conditionFailMessage: §cNot enough money!
-      # ... more items for page 1 ...
-      '50':
-        slot: 53
+          - '&7Be kind to other players.'
+      '2':
+        slot: 26
         item: ARROW
-        amount: 1
-        item-name: §eNext Page →
-        item-lore:
-          - §7Click to go to page 2
+        item-name: '&aNext page'
         click-events:
           next-scene-click: {}
   '1':
     delay: 0
     items:
       '1':
-        slot: 0
-        item: GOLDEN_APPLE
-        amount: 1
-        item-name: §6Golden Apple
+        slot: 13
+        item: COMPASS
+        item-name: '&bTravel'
         item-lore:
-          - §7Price: §a$100
-        click-events:
-          money-remove:
-            amount: 100
-          console_command:
-            commands:
-              - give %player% golden_apple 1
-          message:
-            message: §aPurchased!
-        conditions:
-          has-money:
-            required-balance: 100
-        conditionFailMessage: §cNot enough money!
-      # ... more items for page 2 ...
-      '50':
-        slot: 45
+          - '&7Use /guiplus-warps to browse destinations.'
+      '2':
+        slot: 18
         item: ARROW
-        amount: 1
-        item-name: §e← Previous Page
-        item-lore:
-          - §7Click to go back to page 1
+        item-name: '&ePrevious page'
         click-events:
           previous-scene-click: {}
 ```
+
+`next-scene-click` and `previous-scene-click` try the adjacent scene. They still check that scene's entry conditions; they do not automatically search past an inaccessible page.
+
+## 📂 Opening Actions and Entry Conditions
+
+Add this scene fragment for a staff page:
+
+```yaml
+open-conditions:
+  has-permission:
+    permission: myserver.staff
+open-events:
+  welcome-sound:
+    type: sound-click-event
+    sound: UI_BUTTON_CLICK
+  welcome-message:
+    type: message
+    message: '&7Staff tools are ready.'
+```
+
+Custom action labels such as `welcome-sound` need a `type`. A registered ID can be used directly, for example `message:`. The same rule applies to condition labels with an explicit `condition`.
+
+Use the scene's `open-events` for ordinary opening actions. **Glow At Item** runs on opening automatically; it is a separate item effect, not a general `openEvent` switch in the action editor.
+
+## ⏱ Timed Scenes
+
+Set `disable-scene-animation: false` to play eligible scenes automatically. The first accessible scene opens immediately. Its `delay` is added before the next transition; subsequent delays are cumulative. `20` ticks is about one second.
+
+For example, scene `'0'` with `delay: 20` is shown for roughly one second before scene `'1'`. A delay on the final scene does not restart the sequence. See [Animations](Animations.md) for a complete example and animated lore.
+
+## 🖼 Switching Between Pages
+
+GUIPlus can reuse an open window when the next page has the same inventory type and size. The `gui-settings.seamless-switching` setting controls this. On Paper, `seamless-title-updates` also supports title changes in place; other cases reopen the window.
 
 ---
 

@@ -2,381 +2,314 @@
 
 # Click Events
 
-*Actions that execute when a player clicks an item in a GUI*
+*Build buttons with commands, navigation, rewards and interactive steps*
 
 ---
 
-Click events are actions that execute when a player clicks an item in a GUI. Each item can have multiple click events that execute in sequence.
+An item's `click-events` map holds its actions in order. Add and edit them in the in-game editor, or use the YAML reference below.
 
 ## 📋 Quick Reference
 
 | ID | Description |
 |----|-------------|
 | [`message`](#message) | Send a chat message |
-| [`command`](#player-command) | Run command as the player |
-| [`console_command`](#console-command) | Run command from console |
-| [`title-click-event`](#title) | Show a title/subtitle |
-| [`close-inventory`](#close-inventory) | Close the GUI |
+| [`command`](#player-command) | Run commands as the viewer |
+| [`console_command`](#console-command) | Run commands from console |
+| [`title-click-event`](#title) | Show a title and subtitle |
+| [`close-inventory`](#close-inventory) | Close the viewer's inventory |
 | [`money-give`](#give-money) | Add Vault money |
 | [`money-remove`](#remove-money) | Remove Vault money |
-| [`money-set`](#set-money) | Set Vault balance |
-| [`chat-fetcher`](#chat-fetcher) | Prompt for chat input |
-| [`player-picker-by-console-command`](#player-picker-console-command) | Pick player, run console cmd |
-| [`player-picker-by-player-command`](#player-picker-player-command) | Pick player, run player cmd |
-| [`offline-player-picker-command`](#offline-player-picker) | Pick offline player, run cmd |
-| [`custom-item-give`](#custom-item-give) | Give a custom item |
-| [`save-player-info`](#save-player-info) | Save player data fields |
-| [`take-items`](#take-item) | Remove items from inventory |
+| [`money-set`](#set-money) | Set a Vault balance |
+| [`bank-transfer`](#bank-transfer) | Deposit or withdraw a recorded bank balance |
+| [`chat-fetcher`](#chat-fetcher) | Ask for validated chat input |
+| [`interaction-flow`](#interaction-flow) | Collect answers, review and confirm |
+| [`player-picker-by-console-command`](#player-picker-console-command) | Pick a player and run a console command |
+| [`player-picker-by-player-command`](#player-picker-player-command) | Pick a player and run a viewer command |
+| [`offline-player-picker-command`](#offline-player-picker) | Include offline players in a console-command picker |
+| [`custom-item-give`](#custom-item-give) | Give a copied item stack |
+| [`save-player-info`](#save-player-info) | Save per-player fields |
+| [`practical-reward`](#practical-reward) | Claim a configured practical reward |
+| [`take-items`](#take-item) | Remove matching inventory items |
 | [`level-required`](#level-take) | Remove XP levels |
 | [`xp-take`](#xp-take) | Remove experience points |
-| [`back`](#open-last-gui) | Reopen previous GUI |
+| [`open-gui`](#open-gui) | Open another GUI |
+| [`back`](#open-last-gui) | Reopen a previous GUI |
+| [`open-storage`](#open-storage) | Open personal persistent storage |
 | [`sound-click-event`](#sound) | Play a sound |
-| [`next-scene-click`](#next-scene) | Go to next scene |
-| [`previous-scene-click`](#previous-scene) | Go to previous scene |
-| [`glow-at-item`](#glow-at-item) | Add enchant glow on scene open |
-| [`teleport`](#teleport) | Teleport the target player |
-| [`server-click-event`](#server-bungeecord) | Send to another server |
+| [`next-scene-click`](#next-scene) | Open the next scene |
+| [`previous-scene-click`](#previous-scene) | Open the previous scene |
+| [`glow-at-item`](#glow-at-item) | Add an enchantment glow on scene open |
+| [`teleport`](#teleport) | Teleport the action's target |
+| [`server-click-event`](#server-bungeecord) | Request a proxy server connection |
 | [`player-points-remove`](#player-points-remove) | Remove PlayerPoints |
 
 ## 📐 Click Event Structure
 
-Click events are defined inside an item's `click-events` map:
+Use the action ID as its key, or give the entry any unique key and specify `type` explicitly:
 
 ```yaml
 click-events:
   message:
-    message: &aHello!
-  command:
-    commands:
-      - say Hello from %player%
+    message: '&aHello!'
+  second-message:
+    type: message
+    message: '&7Right-click for more information.'
+    clickType: RIGHT
 ```
+
+Quote text beginning with `&` or `%`, and text containing `: `, so YAML reads it as text. Nested actions belong under another `click-events` map. Unknown action IDs or parameters are rejected; check the console for the file and reason.
 
 ## ⚙ Common Properties
 
-Every click event supports these YAML properties:
+| Property | Default | Description |
+|----------|---------|-------------|
+| `type` | Entry key | Registered action ID; required when the key is a custom name |
+| `clickType` | `NONE` | `LEFT`, `RIGHT`, `MIDDLE`, `SHIFT_LEFT`, `SHIFT_RIGHT`, or `NONE` for any click |
+| `executionDelay` | `0` | Delay in **ticks**; `20` is about one second |
+| `waitForCompletion` | `true` | Wait for this action before continuing the parent list |
+| `conditions` | Empty | Requirements checked for this action |
+| `conditionFailMessage` | Default message | Text shown when its requirement fails |
+| `click-events` | Empty | Child actions, used by inputs and confirmed interactions |
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `clickType` | String | `NONE` | Which mouse button triggers this event: `LEFT`, `RIGHT`, `MIDDLE`, `SHIFT_LEFT`, `SHIFT_RIGHT`, `NONE` (any click) |
-| `executionDelay` | Number | `0` | Delay in **ticks** before this event executes (20 ticks = 1 second) |
+`executionDelay` accepts `0`–`86400`. The scheduler rounds it to whole ticks and waits at least one tick. With `waitForCompletion: false`, later actions may proceed while an input remains open. [Interaction Flows](Interaction-Flows.md) always wait for confirmation.
 
-> **Note:** `executionDelay` is measured in ticks, not seconds. Use `20` for a 1-second delay, `40` for 2 seconds, etc.
-
-The in-game editor also supports `waitForCompletion` (whether subsequent events wait for this one to finish) and `openEvent` (run on scene open instead of click). These are stored in the item's compressed data by the editor but are not directly configurable via hand-written YAML.
-
-Example with click type restriction:
-
-```yaml
-click-events:
-  message:
-    message: &aYou left-clicked!
-    clickType: LEFT
-```
+Conditions normally check the **viewer**. Vault money, copied-item rewards, costs and saved player fields affect the actual target, which defaults to the viewer. Practical rewards always use the viewer's own inventory and UUID progress. A player picker substitutes a selected name in text; it does not change the action target or the command sender. See [Commands & Permissions](Commands-and-Permissions.md) for targeted menu opening.
 
 ## 🖱 All Click Event Types
 
 ### Message
 **ID:** `message`
 
-Sends a colored chat message to the player. Supports PlaceholderAPI placeholders.
+Send a colored chat message to the viewer. Supports the current input, flow and player-name substitutions.
 
 ```yaml
 click-events:
   message:
-    message: &aWelcome to the server, %player%!
+    message: '&aWelcome, %player%!'
 ```
-
----
 
 ### Player Command
 **ID:** `command`
 
-Executes one or more commands as the clicking player.
+Run one or more commands as the viewer. Use `commands` as a list; singular `command` is also accepted for older definitions.
 
 ```yaml
 click-events:
   command:
     commands:
-      - spawn
+      - 'spawn'
+    setOp: false
 ```
 
-The YAML field is `commands` (plural, list). A singular `command` key works for backwards compatibility.
+`setOp: true` temporarily gives that viewer operator status for the command list. Use it only for commands you intend to run with full server authority.
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `commands` | List | Commands to execute as the player |
-| `setOp` | Boolean | When `true`, temporarily grants OP status to execute the command (default: `false`) |
-
-| Placeholder | Description |
-|-------------|-------------|
-| `%player%` | The clicking player's name |
-| `%executor%` | The player who executed the action |
-
-```yaml
-# Run multiple commands with temporary OP
-click-events:
-  command:
-    commands:
-      - spawn
-      - heal
-    setOp: true
-```
-
-> **Warning:** Use `setOp: true` with caution. It temporarily grants the player full operator permissions to execute these commands.
-
----
+In command text, `%player%`, `%player_name%`, `<player>` and `<player_name>` refer to the target; `%executor%` and `<executor>` refer to the viewer. After a picker, the player aliases contain the selected name.
 
 ### Console Command
 **ID:** `console_command`
 
-Executes one or more commands from the server console.
+Run the list from the server console, with the same player aliases:
 
 ```yaml
 click-events:
   console_command:
     commands:
-      - give %player% diamond 1
+      - 'say %executor% selected %player%'
 ```
 
-Same as Player Command — uses `commands` (plural, list).
-
-```yaml
-# Run multiple console commands
-click-events:
-  console_command:
-    commands:
-      - give %player% diamond 1
-      - broadcast %player% received a diamond!
-```
-
----
+A dispatched external command does not confirm that another plugin completed a purchase or granted ownership.
 
 ### Title
 **ID:** `title-click-event`
 
-Sends a title and subtitle to the player with configurable fade times.
-
-**Format:** `title/?/subtitle/?/fadeIn/?/stay/?/fadeOut`
+Send a title to the target. `title-format` uses `title/?/subtitle/?/fadeIn/?/stay/?/fadeOut`; timings are ticks, defaulting to `20`, `60` and `20`.
 
 ```yaml
 click-events:
   title-click-event:
-    title-format: &6Welcome/?/&7to our server/?/10/?/40/?/10
+    title-format: '&6Welcome!/?/&7Enjoy your stay/?/10/?/40/?/10'
 ```
 
-The YAML field is `title-format` (not `title`).
-
-| Parameter | Position | Default | Description |
-|-----------|----------|---------|-------------|
-| title | 1st | — | The main title text (required) |
-| subtitle | 2nd | empty | The subtitle text |
-| fadeIn | 3rd | `20` | Fade-in time in ticks |
-| stay | 4th | `60` | Stay time in ticks |
-| fadeOut | 5th | `20` | Fade-out time in ticks |
-
-Separate each parameter with `/?/`. Only the title is required — all other parameters are optional and use defaults if omitted.
-
-```yaml
-# Minimal - title only, uses default timing
-click-events:
-  title-click-event:
-    title-format: &6Welcome!
-
-# With subtitle
-click-events:
-  title-click-event:
-    title-format: &6Welcome!/?/&7to our server
-```
-
----
+Subtitle and timings may be omitted. This player title is separate from a GUI's inventory title format.
 
 ### Close Inventory
 **ID:** `close-inventory`
 
-Closes the player's currently open inventory.
+Close the viewer's current inventory:
 
 ```yaml
 click-events:
   close-inventory: {}
 ```
 
----
-
 ### Give Money
 **ID:** `money-give`
 
-Adds money to the player's account. Requires Vault.
+Add Vault money to the target. Requires Vault and a working economy provider. `amount` can be a number or an input/flow substitution.
 
 ```yaml
 click-events:
   money-give:
-    amount: 1000
+    amount: 100
 ```
-
-The `amount` field supports PlaceholderAPI placeholders, e.g. `amount: '%input%'`.
-
----
 
 ### Remove Money
 **ID:** `money-remove`
 
-Subtracts money from the player's account. Requires Vault.
+Remove Vault money from the target. Insufficient funds stop the action.
 
 ```yaml
 click-events:
   money-remove:
-    amount: 500
+    amount: '%input%'
 ```
 
----
+Use bounded [Input Rules](Input-Rules.md) when accepting an amount from a player.
 
 ### Set Money
 **ID:** `money-set`
 
-Sets the player's account balance to an exact amount. Requires Vault.
+Set the target's Vault balance to a fixed non-negative number. This field does not accept placeholders.
 
 ```yaml
 click-events:
   money-set:
-    amount: 0
+    amount: 1000
 ```
 
-> **Note:** Unlike `money-give` and `money-remove`, the `amount` field in `money-set` is a fixed number and does **not** support PlaceholderAPI placeholders.
+### Bank Transfer
+**ID:** `bank-transfer`
 
----
+Move money between the target's Vault account and one GUIPlus player-data field. Use `DEPOSIT` or `WITHDRAW`, a positive `amount`, and a bank `field` such as `deposited`.
+
+```yaml
+click-events:
+  bank-transfer:
+    direction: DEPOSIT
+    amount: '%input%'
+    field: deposited
+```
+
+Use this dedicated action for bank transfers. It records unresolved outcomes for staff review; do not replace it with independent payment and data-saving actions. See [Chat Fetcher](Chat-Fetcher.md#bank-deposit-example) and [Player Data](Player-Data.md#bank-balances).
 
 ### Chat Fetcher
 **ID:** `chat-fetcher`
 
-Prompts the player to type input in chat. After input is received, nested click events are executed with access to the `%input%` placeholder.
+Prompt the viewer, validate their answer, then run child actions using `%input%`:
 
 ```yaml
 click-events:
   chat-fetcher:
-    message: &ePlease type a number in chat!
-    conditionFailMessage: &cInvalid input!
-    conditions:
-      is-integer:
-        value: '%input%'
+    message: '&eType a quantity from 1 to 64.'
+    input-type: INTEGER
+    input-min: 1
+    input-max: 64
+    input-max-length: 2
     click-events:
       message:
-        message: &aYou typed %input%!
+        message: '&aYou entered %input%.'
 ```
 
-See [Chat Fetcher](Chat-Fetcher.md) for full details.
+See [Chat Fetcher](Chat-Fetcher.md) and [Input Rules](Input-Rules.md).
 
----
+### Interaction Flow
+**ID:** `interaction-flow`
+
+Collect named answers, show a review and run child actions only after Confirm. Configure fields and confirmed actions through the editor. Answers use `%flow_<name>%`, such as `%flow_choice%`.
+
+```yaml
+click-events:
+  interaction-flow:
+    flow-title: '&8Review your choice'
+    flow-steps:
+      '0':
+        name: choice
+        label: 'Choose a destination'
+        input-type: ENUM
+        input-max-length: 20
+        input-options: [spawn, market]
+    click-events:
+      message:
+        message: '&aYou confirmed %flow_choice%.'
+```
+
+See [Interaction Flows](Interaction-Flows.md) for Back, Cancel, field scope and confirmation requirements.
 
 ### Player Picker (Console Command)
 **ID:** `player-picker-by-console-command`
 
-Opens an online player selection GUI. When a player is selected, executes a console command.
+Choose an online player, then run a console command using their name:
 
 ```yaml
 click-events:
   player-picker-by-console-command:
-    command: give %player% diamond 1
+    command: 'say %executor% selected %player%'
 ```
-
-`%player%` is replaced with the selected player's name.
-
----
 
 ### Player Picker (Player Command)
 **ID:** `player-picker-by-player-command`
 
-Opens an online player selection GUI. When a player is selected, the clicking player executes a command.
+Choose an online player, then run the command as the viewer:
 
 ```yaml
 click-events:
   player-picker-by-player-command:
-    command: msg %player% Hello from %executor%!
+    command: 'msg %player% Hello from %executor%!'
 ```
 
----
+The old ID `player-picker-command` is accepted as an alias for this action. A following chat prompt captures the current selected-name aliases when it opens.
 
 ### Offline Player Picker
 **ID:** `offline-player-picker-command`
 
-Opens a player selection GUI that includes offline players. Runs as a console command.
+Include offline players in the selection list, then run the command from console:
 
 ```yaml
 click-events:
   offline-player-picker-command:
-    command: unban %player%
+    command: 'unban %player%'
 ```
-
----
 
 ### Custom Item Give
 **ID:** `custom-item-give`
 
-Gives a custom configured item to the player. This click event stores items as serialized Bukkit ItemStack objects.
-
-> **Tip:** This is best configured through the in-game editor rather than by hand. The editor lets you place any item and it will be serialized automatically.
-
-```yaml
-# Configured via the in-game editor, stored as a serialized ItemStack:
-click-events:
-  custom-item-give:
-    item:
-      ==: org.bukkit.inventory.ItemStack
-      v: 3700
-      type: DIAMOND_SWORD
-      amount: 1
-```
-
----
+Give the target the stack stored in `item`. Choose or copy the actual stack through the editor to preserve its metadata and avoid hand-writing version-specific Bukkit item data.
 
 ### Save Player Info
 **ID:** `save-player-info`
 
-Saves data fields to the player's persistent data. Supports math operations.
-
-**Format:** `field1:value1,field2:value2`
+Save fields for the target with `field:value` pairs separated by commas:
 
 ```yaml
 click-events:
   save-player-info:
-    save-format: kills:%GUIPlus_player_info_kills%+1
+    save-format: 'rank:literal:vip,points:number:100'
 ```
 
-Math operators supported: `+`, `-`, `*`, `/`, `^` (exponentiation), and functions `sqrt()`, `sin()`, `cos()`, `tan()`. Parentheses are supported for grouping.
+Use `literal:` for text, `number:` for numeric values and `calc:` for calculations. See [Player Data](Player-Data.md).
 
-See [Player Data](Player-Data.md) for full details.
+### Practical Reward
+**ID:** `practical-reward`
 
----
+Claim one canonical reward from the configured Daily, Playtime or Starter catalog. This action always claims for the viewer, even when the menu carries another action target:
+
+```yaml
+click-events:
+  practical-reward:
+    reward: daily-1
+```
+
+Claims remain attached to the player's UUID and stable reward ID across menu copies. See [Ready-to-Use Rewards](Ready-to-Use-Rewards.md) for all IDs, actual reward editing and inventory checks.
 
 ### Take Item
 **ID:** `take-items`
 
-Removes specific items from the player's inventory. Items are stored as serialized Bukkit ItemStack objects.
-
-> **Tip:** This is best configured through the in-game editor. The editor lets you select which items to remove.
-
-```yaml
-# Configured via the in-game editor, stored as serialized ItemStacks:
-click-events:
-  take-items:
-    items:
-      - ==: org.bukkit.inventory.ItemStack
-        v: 3700
-        type: DIAMOND
-        amount: 5
-    ignoreDurability: false
-```
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `items` | List | List of serialized Bukkit ItemStack objects to remove |
-| `ignoreDurability` | Boolean | When `true`, ignores item durability when matching |
-
----
+Remove the stacks in the `items` list from the target. Configure the real stacks in the editor. `ignoreDurability: true` ignores damage when matching; it does not ignore other item metadata. This action uses camel-case `ignoreDurability`, whereas the `has-items` condition uses `ignore-durability`.
 
 ### Level Take
 **ID:** `level-required`
 
-Removes XP levels from the player.
+Remove XP **levels** from the target; the action stops if they cannot pay the whole cost:
 
 ```yaml
 click-events:
@@ -384,14 +317,10 @@ click-events:
     level: 10
 ```
 
-The YAML field is `level` (singular, not `levels`).
-
----
-
 ### XP Take
 **ID:** `xp-take`
 
-Removes experience points (not levels) from the player.
+Remove experience **points**, rather than levels:
 
 ```yaml
 click-events:
@@ -399,24 +328,48 @@ click-events:
     xp: 500
 ```
 
----
+### Open GUI
+**ID:** `open-gui`
+
+Open the menu identified by `gui`. Its permission and scene admission requirements still apply. `open-gui` responds to item clicks and is skipped inside scene `open-events`, preventing automatic redirect loops.
+
+```yaml
+click-events:
+  open-gui:
+    gui: bank
+```
 
 ### Open Last GUI
 **ID:** `back`
 
-Reopens the player's previously viewed GUI.
+Reopen a previous accessible player GUI from the viewer's history. This differs from `/gui !!`, which reopens the last editor screen.
 
 ```yaml
 click-events:
   back: {}
 ```
 
----
+### Open Storage
+**ID:** `open-storage`
+
+Open the viewer's personal pool, with size determined by the highest matching permission tier:
+
+```yaml
+click-events:
+  open-storage:
+    storage-id: vault
+    title: '&8%player% Storage'
+    rows: 3
+    permission-rows:
+      - 'guiplus.storage.vip:6'
+```
+
+Rows range from 1 to 6. Reusing `storage-id` reuses the same per-player contents. See [Configuration](Configuration.md).
 
 ### Sound
 **ID:** `sound-click-event`
 
-Plays a sound at the player's location.
+Play a Bukkit sound to the viewer, with optional `volume` and `pitch` defaulting to `1`:
 
 ```yaml
 click-events:
@@ -426,86 +379,53 @@ click-events:
     pitch: 1.0
 ```
 
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| `sound` | String | — | The Bukkit sound name |
-| `volume` | Float | `1.0` | Volume of the sound |
-| `pitch` | Float | `1.0` | Pitch of the sound |
-
-You can find all valid sound names in the [Bukkit Sound enum](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html).
-
----
-
 ### Next Scene
 **ID:** `next-scene-click`
-
-Navigates to the next scene in the GUI.
 
 ```yaml
 click-events:
   next-scene-click: {}
 ```
 
-See [Scenes](Scenes.md) for multi-page navigation.
-
----
+Open the next scene if its admission requirements pass. See [Scenes](Scenes.md).
 
 ### Previous Scene
 **ID:** `previous-scene-click`
-
-Navigates to the previous scene in the GUI.
 
 ```yaml
 click-events:
   previous-scene-click: {}
 ```
 
----
+Open the previous scene if its admission requirements pass.
 
 ### Glow At Item
 **ID:** `glow-at-item`
 
-Adds an enchanted glow effect to the item when the scene opens. This is an **open event** — it runs automatically when the scene is displayed, not when the player clicks. The glow is tracked per-player, so each player sees it independently.
-
-> **Note:** This event is configured through the in-game editor. It automatically sets `openEvent: true` internally and can be combined with conditions to glow only for certain players.
+Add an enchantment glow when the item is displayed. This action automatically runs on open; its action conditions can decide which viewers see the glow.
 
 ```yaml
 click-events:
   glow-at-item: {}
 ```
 
----
-
 ### Teleport
 **ID:** `teleport`
 
-Teleports the target player to a specific location. In normal use the target is the clicking player, but when used with a player picker, the selected player is teleported instead.
-
-**Supported formats:**
-
-| Format | Example | Description |
-|--------|---------|-------------|
-| `world,x,y,z,yaw,pitch` | `world,0,100,0,90,0` | Full location with rotation |
-| `world,x,y,z` | `world,0,100,0` | Location without rotation |
-| `x,y,z,yaw,pitch` | `0,100,0,90,0` | Coordinates in player's current world |
-| `x,y,z` | `0,100,0` | Coordinates in player's current world |
-| `world` | `world_nether` | Teleport to a world's spawn point |
-| `current` | `current` | Current location (useful with PlaceholderAPI) |
+Teleport the actual action target to a saved location. Set the destination in the editor, or use its labeled six-part format:
 
 ```yaml
 click-events:
   teleport:
-    location: world,0,100,0,0,0
+    location: 'World: world, X: 0.0, Y: 64.0, Z: 0.0, Yaw: 90.0, Pitch: 0.0'
 ```
 
-> **Tip:** Use `current` with PlaceholderAPI to create dynamic teleport destinations, or use a world name to send players to a world's spawn.
-
----
+The world must be available. A picker by itself only changes text aliases; it does not turn its selected name into this action's target.
 
 ### Server (BungeeCord)
 **ID:** `server-click-event`
 
-Sends the player to another server on your BungeeCord/Velocity network.
+Send a BungeeCord `Connect` plugin message for the viewer:
 
 ```yaml
 click-events:
@@ -513,14 +433,12 @@ click-events:
     server: lobby
 ```
 
-See [BungeeCord Support](BungeeCord-Support.md).
-
----
+See [BungeeCord Support](BungeeCord-Support.md) for proxy setup.
 
 ### Player Points Remove
 **ID:** `player-points-remove`
 
-Subtracts PlayerPoints currency from the player. Requires the PlayerPoints plugin.
+Remove a whole-number PlayerPoints amount from the target. This action is registered when PlayerPoints is available.
 
 ```yaml
 click-events:
@@ -528,43 +446,11 @@ click-events:
     amount: 100
 ```
 
-## 🔗 Combining Multiple Click Events
+## 📂 Scene Open Events
 
-Items can have multiple click events that execute in sequence:
+A scene's `open-events` map runs actions when the scene is opened. See [Scenes](Scenes.md). `openEvent` is not a supported YAML action property; `glow-at-item` selects its open behavior automatically.
 
-```yaml
-click-events:
-  sound-click-event:
-    sound: ENTITY_PLAYER_LEVELUP
-  message:
-    message: &6Congratulations!
-  console_command:
-    commands:
-      - give %player% diamond 5
-  close-inventory: {}
-```
-
-## 🎯 Click Type Restrictions
-
-Restrict events to specific mouse buttons by assigning unique keys:
-
-```yaml
-click-events:
-  buy-message:
-    message: &aYou bought the item!
-    clickType: LEFT
-  info-message:
-    message: &7Item info here...
-    clickType: RIGHT
-```
-
-> **Note:** Each click event entry needs a unique key in YAML. If you need two events of the same type (e.g., two `message` events), give them different keys like `buy-message` and `info-message`. The event type is determined by the internal structure, not the key name.
-
-## 📂 Open Events
-
-Some click events can run when the scene opens instead of on click. The `glow-at-item` event does this automatically. For other events, `openEvent` can be configured through the in-game editor — it is stored in the item's compressed data rather than as a direct YAML field.
-
-Scenes also support their own `open-events` section — see [Scenes](Scenes.md) for details.
+Use [Button States](Button-States.md) for Locked / Ready / Owned behavior, and [Shared Components](Shared-Components.md) to reuse an explicitly linked button. [Warp Catalogs](Warp-Catalogs.md) provide managed warp, page and search actions for automatic EssentialsX lists.
 
 ---
 

@@ -2,110 +2,130 @@
 
 # PlaceholderAPI Placeholders
 
-*Dynamic content and custom GUIPlus placeholders*
+*Display live information and use values in the right context*
 
 ---
 
-GUIPlus integrates with [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) to provide dynamic content in GUIs and registers its own custom placeholders.
+GUIPlus supports [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) in item names, lore, supported condition values, chat prompt text and dynamic skull textures. Install the expansion that provides a foreign placeholder, then use its documented token.
 
-## 📝 Using Placeholders in GUIs
+GUIPlus also has local input, state, reward and catalog tokens. These have their own scopes; they do not need a PlaceholderAPI expansion.
 
-PlaceholderAPI placeholders can be used in nearly every text field:
-
-- Item display names
-- Item lore lines
-- Click event parameters (commands, messages, amounts)
-- Condition values
-- Skull textures
-- Chat fetcher messages
-
-### Example: Dynamic Lore
+## 📝 Dynamic Names and Lore
 
 ```yaml
-item-name: §6%player_name%'s Profile
+item-name: '&6Profile'
 item-lore:
-  - ''
-  - §7Balance: §a$%vault_eco_balance_formatted%
-  - §7Level: §e%player_level%
-  - §7Health: §c%player_health%
-  - ''
-  - §7Bank: §b$%GUIPlus_player_info_deposited%
+  - '&7Balance: &a%vault_eco_balance_formatted%'
+  - '&7Level: &e%player_level%'
+  - '&7Points: &b%GUIPlus_player_info_points%'
 ```
 
-Lore lines containing placeholders are updated automatically while the GUI is open (every 20 ticks / 1 second).
+The relevant PlaceholderAPI expansions must be installed. Dynamic item text refreshes using `gui-settings.update-delay` in `config.yml`: default `20` ticks, allowed range `1`–`1200`. Static text and unchanged rendered items are skipped.
 
-## 🔗 GUIPlus Custom Placeholders
+A field accepting text does not automatically support every placeholder system. For example, a command's native player aliases and a flow's answers are distinct from PlaceholderAPI expansion tokens.
 
-GUIPlus registers the following custom placeholders under the identifier `GUIPlus`:
+## 🔗 GUIPlus PlaceholderAPI Expansion
 
-| Placeholder | Description | Example |
-|-------------|-------------|---------|
-| `%GUIPlus_player_info_<field>%` | Returns a stored player data field value | `%GUIPlus_player_info_kills%` → `25` |
-| `%GUIPlus_gui_exist_<id>%` | Returns `true` or `false` if a GUI with the given ID exists | `%GUIPlus_gui_exist_bank%` → `true` |
-| `%GUIPlus_gui_title_<id>%` | Returns the title of the specified GUI | `%GUIPlus_gui_title_bank%` → `§ePersonal Bank` |
-| `%GUIPlus_gui_rows_<id>%` | Returns the number of rows in the specified GUI | `%GUIPlus_gui_rows_bank%` → `3` |
-| `%GUIPlus_gui_type_<id>%` | Returns the inventory type of the specified GUI | `%GUIPlus_gui_type_bank%` → `CHEST` |
-| `%GUIPlus_gui_scenes_<id>%` | Returns the number of scenes in the specified GUI | `%GUIPlus_gui_scenes_bank%` → `1` |
-| `%GUIPlus_self_base64%` | Returns the player's skin texture as a Base64 string (for skull items) | Used in `skullBase64` field |
+GUIPlus registers its expansion when PlaceholderAPI is available. No separate GUIPlus eCloud download is needed.
 
-## 💾 Player Info Placeholder
+| Placeholder | Result |
+|-------------|--------|
+| `%GUIPlus_player_info_<field>%` | A stored field for the player being evaluated; `null` when unset |
+| `%GUIPlus_gui_exist_<id>%` | `true` or `false` |
+| `%GUIPlus_gui_title_<id>%` | The GUI's configured title |
+| `%GUIPlus_gui_rows_<id>%` | Its configured row count |
+| `%GUIPlus_gui_type_<id>%` | `CHEST`, `DROPPER`, `DISPENSER` or `HOPPER` |
+| `%GUIPlus_gui_scenes_<id>%` | Its number of scenes |
+| `%GUIPlus_self_base64%` | The online player's skin texture, for a skull field |
 
-The `%GUIPlus_player_info_<field>%` placeholder is the most commonly used GUIPlus placeholder. It retrieves data saved via the [Save Player Info click event](Click-Events.md#save-player-info).
+Use the GUI **ID**, not its title, in GUI tokens. For example, `%GUIPlus_gui_exist_bank%` checks the GUI with `id: bank`. Player-data tokens use a **field name**, such as `%GUIPlus_player_info_points%`; they do not contain a GUI ID.
 
 ```yaml
-# Saving a value
-click-events:
-  save-player-info:
-    save-format: coins:100
-
-# Displaying it in lore
-item-lore:
-  - §7Your coins: §e%GUIPlus_player_info_coins%
+skullBase64: '%GUIPlus_self_base64%'
 ```
 
-If the field has not been set for a player, the placeholder returns the string `null`.
+See [Custom Heads & Skulls](Custom-Heads-and-Skulls.md) for texture setup.
 
-See [Player Data](Player-Data.md) for full details on saving and retrieving data.
+## 💾 Player Data Tokens
 
-## ⭐ Special Placeholders
-
-### `%input%`
-
-Available inside [Chat Fetcher](Chat-Fetcher.md) nested click events and conditions. Contains the text the player typed in chat.
+Save a value using an action, then display it through PlaceholderAPI:
 
 ```yaml
 click-events:
-  chat-fetcher:
-    message: §eType your message:
-    click-events:
-      message:
-        message: §7You said: §f%input%
+  save-player-info:
+    save-format: 'points:number:100'
 ```
-
-### `%player%`
-
-The name of the clicking player. Available in all click events.
-
-### `%executor%`
-
-The name of the player who executed the action. Useful in player picker click events where `%player%` refers to the selected player.
-
-### `%self_base64%`
-
-Used in skull textures to dynamically render the viewing player's skin. See [Custom Heads](Custom-Heads-and-Skulls.md).
-
-## 🧩 Combining with Other PAPI Plugins
-
-Since GUIPlus supports any PlaceholderAPI placeholder, you can use placeholders from any installed PAPI expansion:
 
 ```yaml
 item-lore:
-  - §7Play time: §e%statistic_time_played%
-  - §7Rank: §a%luckperms_primary_group%
-  - §7Kills: §c%statistic_player_kills%
-  - §7Deaths: §4%statistic_deaths%
-  - §7K/D: §6%math_{statistic_player_kills}/{statistic_deaths}%
+  - '&7Your points: &e%GUIPlus_player_info_points%'
 ```
+
+GUIPlus resolves its own player-info tokens **without PlaceholderAPI** in `conditional-placeholder` conditions and [Button States](Button-States.md) names/lore. Ordinary legacy item names/lore and existing-field calculations in `save-player-info` use PlaceholderAPI. See [Player Data](Player-Data.md).
+
+Conditions normally evaluate the viewer, while a saved-data action writes to its actual target. A player-picker name substitution does not change this context.
+
+## ⭐ Input and Player Aliases
+
+| Token | Where it is available | Meaning |
+|-------|-----------------------|---------|
+| `%input%` | A Chat Fetcher's conditions and child actions | That prompt's validated answer |
+| `%flow_<name>%` | An Interaction Flow's confirmed child actions | The answer to a named field |
+| `%player%`, `%player_name%` | Supported action text | The action target's name; a picker can substitute its selected name |
+| `%executor%` | Command/picker text | The viewer who executes the action |
+| `<player>`, `<player_name>`, `<executor>` | Command text | Alternate forms of the corresponding command aliases |
+
+[Chat Fetcher](Chat-Fetcher.md) input belongs to its prompt. A nested prompt gets its own `%input%`. A following prompt captures the player-picker aliases that exist when it opens.
+
+[Interaction Flows](Interaction-Flows.md) use names such as `%flow_choice%` and `%flow_amount%`. Their answers belong to that confirmed interaction; they are not temporary player-data fields or values passed into later parent actions.
+
+Text aliases do not change the command sender, actual resource target or condition viewer.
+
+## 🎁 Local Practical Reward Tokens
+
+These tokens work in GUIPlus item names and lore without PlaceholderAPI:
+
+| Token | Meaning |
+|-------|---------|
+| `%GUIPlus_reward_daily_total%` | Lifetime successful daily claims |
+| `%GUIPlus_reward_daily_day%` | Current daily step |
+| `%GUIPlus_reward_daily_remaining%` | Formatted wait remaining |
+| `%GUIPlus_reward_daily_remaining_seconds%` | Wait remaining in seconds |
+| `%GUIPlus_reward_daily_interval%` | Configured daily interval |
+| `%GUIPlus_reward_playtime%` | Total playtime shown in minutes |
+| `%GUIPlus_reward_starter_choice%` | Recorded starter choice |
+| `%GUIPlus_reward_threshold_playtime-30m%` | Current requirement for that stable milestone ID |
+| `%GUIPlus_reward_bundle_daily-1%` | Actual configured bundle for that reward ID |
+
+Put a bundle token **alone on a lore line** to expand the bundle into separate readable lines:
+
+```yaml
+item-lore:
+  - '&7Available after %GUIPlus_reward_daily_interval%'
+  - '%GUIPlus_reward_bundle_daily-1%'
+```
+
+Use the corresponding stable reward ID for other bundles or milestone thresholds. These are local GUIPlus display tokens; they are not additional requests handled by the PlaceholderAPI expansion. See [Ready-to-Use Rewards](Ready-to-Use-Rewards.md).
+
+## 🧩 State, Component and Catalog Parameters
+
+| Token | Scope |
+|-------|-------|
+| `%state:key%` | Shared values inside one [Button State](Button-States.md) definition |
+| `%component:key%` | Shared template defaults and instance values in [Shared Components](Shared-Components.md) |
+| `%catalog_id%`, `%warp_name%`, `%page%`, `%pages%`, `%query%` | Managed [Warp Catalog](Warp-Catalogs.md) display text |
+
+These are authored parameters, not global PlaceholderAPI values. Supported structured display and behavior text can use them; opaque item NBT is preserved rather than rewritten as text.
+
+## ⏱ Cooldown Failure Text
+
+`%cooldown_remaining_seconds%` is available in a cooldown denial's `conditionFailMessage` or the corresponding `messages.yml` text. It reads the first failed cooldown for the viewer, rounded up to seconds, without changing the timer.
+
+```yaml
+conditionFailMessage: '&cWait %cooldown_remaining_seconds% seconds.'
+```
+
+It is not a general timer placeholder for item lore. See [Conditions](Conditions.md#cooldown).
 
 ---
 

@@ -2,39 +2,73 @@
 
 # Conditions
 
-*Control item visibility and click event execution*
+*Choose what players can see, open and execute*
 
 ---
 
-Conditions control whether an item is shown to a player and whether click events are allowed to execute. If a condition fails, the item is hidden (or replaced by a nested fallback item), and the `conditionFailMessage` is shown.
+Conditions check the player **viewing** the menu. Put them at the level that matches your goal:
+
+| Location | Purpose |
+|----------|---------|
+| Scene `open-conditions` | Allow entry to a scene |
+| Item `showConditions` | Show this item or try its nested fallback |
+| Item `conditions` | Allow clicking the displayed item |
+| Action `conditions` | Allow that action to execute |
+| Chat Fetcher `conditions` | Validate the submitted answer before child actions |
+
+Hiding an item and authorizing its actions are separate settings. A failed click requirement leaves the item visible and displays a failure message. All requirements in one list must pass.
 
 ## 📐 Condition Structure
 
-Conditions are defined inside an item's `conditions` map:
+Use the registered ID as the key, or a unique custom key with an explicit `condition`:
+
+```yaml
+showConditions:
+  has-permission:
+    permission: server.vip
+conditions:
+  minimum-balance:
+    condition: has-money
+    required-balance: 1000
+conditionFailMessage: '&cYou need 1000 coins.'
+```
+
+Quote text starting with `&` or `%`. Unknown IDs and unsupported parameters reject the affected definition; requirements are never silently removed. A registered condition whose required provider is unavailable denies at runtime. Types registered only with an integration, such as `player-points`, cannot load while that integration is absent.
+
+## 📋 Quick Reference
+
+| ID | Check | Fields |
+|----|-------|--------|
+| `has-money` | Vault economy balance | `required-balance` |
+| `has-permission` | Permission node | `permission` |
+| `has-empty-slots` | Empty player storage slots | `free-slots` |
+| `is-integer` | Parseable whole number | `value` |
+| `is-double` | Parseable finite decimal | `value` |
+| `conditional-placeholder` | Literal or numeric comparison | `conditional_condition` |
+| `cooldown` | Per-player timer | `cooldown`, `id` |
+| `has-items` | Matching item quantities | `items`, `ignore-durability` |
+| `level-required` | XP levels | `level` |
+| `xp-required` | Experience points | `xp` |
+| `practical-reward-status` | Practical reward availability | `reward`, `state` |
+| `player-points` | PlayerPoints balance; available with PlayerPoints | `amount` |
+
+## ⚙ Common Properties
+
+Every condition accepts `inverted: true` to reverse an ordinary true/false result. For example, an inverted `is-integer` check matches text that is not a parseable integer. Invalid or unresolved comparison operands, unavailable required providers and evaluation errors remain denied rather than passing through inversion.
 
 ```yaml
 conditions:
   has-permission:
-    permission: admin.panel
-  has-money:
-    required-balance: 1000
-conditionFailMessage: &cYou don't meet the requirements!
+    permission: server.blocked
+    inverted: true
 ```
-
-## Common Properties
-
-Every condition supports:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `inverted` | Boolean | When `true`, the condition result is negated (passes when it would normally fail) |
 
 ## ✅ All Condition Types
 
 ### Has Money
 **ID:** `has-money`
 
-Checks if the player has at least the specified balance. Requires Vault.
+Check that the viewer has at least this Vault balance. Requires Vault and an economy provider. `required-balance` accepts a number or supported text substitution.
 
 ```yaml
 conditions:
@@ -42,36 +76,23 @@ conditions:
     required-balance: 500
 ```
 
-The `required-balance` field supports PlaceholderAPI placeholders.
-
----
+The old `has-balance` ID remains accepted; new saves use `has-money`.
 
 ### Has Permission
 **ID:** `has-permission`
 
-Checks if the player has a specific permission node.
-
 ```yaml
 conditions:
   has-permission:
-    permission: myserver.vip
+    permission: server.vip
 ```
 
-To check if a player does **not** have a permission:
-
-```yaml
-conditions:
-  has-permission:
-    permission: myserver.banned
-    inverted: true
-```
-
----
+Check the viewer's permission. Targeting a different player with a menu does not change whose permission is checked.
 
 ### Empty Slots
 **ID:** `has-empty-slots`
 
-Checks if the player's inventory has a minimum number of empty slots.
+Require a minimum of `0`–`36` empty slots in the viewer's player inventory storage area:
 
 ```yaml
 conditions:
@@ -79,14 +100,12 @@ conditions:
     free-slots: 5
 ```
 
-The YAML field is `free-slots` (not `slots`).
-
----
+This counts empty slots; it does not calculate whether a particular reward bundle fits into partial stacks. Practical rewards perform their own whole-bundle fit check.
 
 ### Integer Validation
 **ID:** `is-integer`
 
-Validates that a value is a valid integer. Useful for validating chat fetcher input to ensure the player typed a whole number.
+Check that text can be parsed as an integer. This does not compare its size.
 
 ```yaml
 conditions:
@@ -94,14 +113,12 @@ conditions:
     value: '%input%'
 ```
 
-> **Note:** This condition only checks if the value can be parsed as an integer. It does not support comparison operators.
-
----
+For new chat prompts, [Input Rules](Input-Rules.md) let you choose INTEGER and minimum/maximum values directly.
 
 ### Double Validation
 **ID:** `is-double`
 
-Validates that a value is a valid decimal number. Useful for validating chat fetcher input that should accept decimals.
+Check that text can be parsed as a finite decimal number. Use `conditional-placeholder` for comparisons, or DECIMAL [Input Rules](Input-Rules.md) for bounded player input.
 
 ```yaml
 conditions:
@@ -109,97 +126,60 @@ conditions:
     value: '%input%'
 ```
 
-> **Note:** This condition only checks if the value can be parsed as a decimal number. It does not support comparison operators. Use `conditional-placeholder` for numeric comparisons.
-
----
-
 ### Conditional Placeholder
 **ID:** `conditional-placeholder`
 
-Compares two values using PlaceholderAPI placeholders. This is the most versatile condition type and the one to use for numeric comparisons.
+Compare two values with exactly one supported operator:
 
-**Operators:**
+| Operator | Meaning |
+|----------|---------|
+| `=` | Exact string equality |
+| `!=` | Exact string inequality |
+| `(=)` | Left text contains right text |
+| `(!=)` | Left text does not contain right text |
+| `<`, `>`, `<=`, `>=` | Finite numeric comparison |
 
-| Operator | Description |
-|----------|-------------|
-| `=` | String equals (exact match) |
-| `!=` | String not equals |
-| `<` | Numeric less than |
-| `>` | Numeric greater than |
-| `<=` | Numeric less than or equal |
-| `>=` | Numeric greater than or equal |
-| `(=)` | String contains check |
-| `(!=)` | String not-contains check |
-
-The `=` and `!=` operators perform **string** comparison, not numeric. For numeric equality, use `>=` and `<=` together. The `(=)` operator checks if the left side **contains** the right side; `(!=)` checks that it does **not contain** it.
-
-The YAML field is `conditional_condition` (not `condition`):
+Use the field `conditional_condition`. For string comparisons, spaces are part of the text.
 
 ```yaml
 conditions:
-  conditional-placeholder:
-    conditional_condition: '%player_level%>=10'
+  progress:
+    condition: conditional-placeholder
+    conditional_condition: '%GUIPlus_player_info_points%>=50'
 ```
 
-Example checking if the player can afford a withdrawal:
-```yaml
-conditions:
-  conditional-placeholder:
-    conditional_condition: '%GUIPlus_player_info_deposited%>=%input%'
-```
+GUIPlus resolves its own `%GUIPlus_player_info_<field>%` tokens locally for the viewer in this condition. Other plugins' placeholders need PlaceholderAPI and their expansions. Missing fields return `null`; numeric comparisons with missing or unresolved values fail.
 
----
+`=` compares text, so `1` and `1.0` differ. For numeric equality, use separate `>=` and `<=` conditions with explicit custom IDs.
 
 ### Cooldown
 **ID:** `cooldown`
-
-Enforces a time-based cooldown before the condition passes again.
 
 ```yaml
 conditions:
   cooldown:
     cooldown: 30000
-    id: my-cooldown
+    id: example-button
+conditionFailMessage: '&cTry again in %cooldown_remaining_seconds% seconds.'
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `cooldown` | Long | Cooldown duration in **milliseconds** |
-| `id` | String | A unique identifier for this cooldown |
+`cooldown` is a whole number of **milliseconds**; `30000` means 30 seconds. The editor also accepts suffixes such as `30s`, `1h` and `1d` during setup. Keep a stable `id` to share or retain a timer; when it is omitted, a fallback ID is derived from the condition's configuration path.
 
-> **Note:** The value is in milliseconds. Use `1000` for 1 second, `30000` for 30 seconds, `3600000` for 1 hour. The `id` field is required to track cooldown state per player. Time unit suffixes (`s`, `ms`, `h`, `d`) are only supported in the in-game editor setup, not in the YAML file directly.
+A successful cooldown evaluation starts its timer. Merely placing it in a visibility list can therefore consume it while the menu is displayed. Use it in click/action requirements, and place it after read-only checks that should run first.
 
----
+The remaining-time token reports the first failed cooldown for that viewer, rounded up to seconds. Reading it does not start or extend the timer. Default denials use `default_fail_cooldown` in `messages.yml`; `cooldown_remaining_suffix` adds the time to older messages that lack the token. Set that suffix to `''` to disable the automatic addition.
+
+[Button States](Button-States.md) visibility and [Interaction Flows](Interaction-Flows.md) requirements accept read-only guards, so they exclude cooldown. Put cooldown on the click or confirmed action instead.
 
 ### Has Items
 **ID:** `has-items`
 
-Checks if the player's inventory contains specific items. Items are stored as serialized Bukkit ItemStack objects.
+Check for the whole configured quantity of matching items without removing them. Use the in-game editor to copy the real stacks into `items`, preserving their metadata.
 
-> **Tip:** This is best configured through the in-game editor. The editor lets you select which items to check for.
-
-```yaml
-conditions:
-  has-items:
-    items:
-      - ==: org.bukkit.inventory.ItemStack
-        v: 3700
-        type: DIAMOND
-        amount: 10
-    ignore-durability: false
-```
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `items` | List | List of serialized Bukkit ItemStack objects to check for |
-| `ignore-durability` | Boolean | When `true`, ignores item durability when matching |
-
----
+`ignore-durability: true` ignores item damage when matching. The [Take Item action](Click-Events.md#take-item) removes items and uses the different spelling `ignoreDurability`.
 
 ### Level
 **ID:** `level-required`
-
-Checks if the player has at least the specified XP level.
 
 ```yaml
 conditions:
@@ -207,12 +187,10 @@ conditions:
     level: 30
 ```
 
----
+Require at least 30 XP levels without taking them. The action with this same ID removes levels; the enclosing `conditions` or `click-events` map determines which one you are authoring.
 
 ### XP
 **ID:** `xp-required`
-
-Checks if the player has at least the specified total experience points.
 
 ```yaml
 conditions:
@@ -220,12 +198,26 @@ conditions:
     xp: 1000
 ```
 
----
+Require experience points rather than XP levels.
+
+### Practical Reward Status
+**ID:** `practical-reward-status`
+
+Check a canonical reward's current state without claiming it:
+
+```yaml
+showConditions:
+  practical-reward-status:
+    reward: daily-1
+    state: READY
+```
+
+States are `LOCKED`, `READY`, `OWNED` and `BLOCKED`. Use the [Practical Reward action](Click-Events.md#practical-reward) to claim, and see [Ready-to-Use Rewards](Ready-to-Use-Rewards.md) for the stable reward IDs.
 
 ### Player Points
 **ID:** `player-points`
 
-Checks the player's PlayerPoints balance. Requires the PlayerPoints plugin.
+Registered when PlayerPoints is available. Check the viewer's balance without removing it:
 
 ```yaml
 conditions:
@@ -233,66 +225,35 @@ conditions:
     amount: 500
 ```
 
-## 🔗 Using Conditions with Click Events
+## 👁 Visibility and Click Requirements
 
-Conditions can be applied at two levels:
-
-### 1. Item-Level Conditions
-
-Controls whether the item is **visible** to the player:
+This item appears only for VIP viewers and requires 50 points when clicked:
 
 ```yaml
 '1':
   slot: 13
   item: DIAMOND_SWORD
-  item-name: &6VIP Sword
-  conditions:
+  item-name: '&6VIP Information'
+  showConditions:
     has-permission:
       permission: server.vip
-  conditionFailMessage: &cYou need VIP to see this!
+  conditions:
+    enough-points:
+      condition: conditional-placeholder
+      conditional_condition: '%GUIPlus_player_info_points%>=50'
+  conditionFailMessage: '&cYou need 50 points.'
+  click-events:
+    message:
+      message: '&aYou meet the requirements.'
 ```
 
-### 2. Chat Fetcher Conditions
+## 📊 Nested Items and Sorting Groups
 
-Validates input received from the chat fetcher:
+`nestedItems` supplies alternative appearances in the same slot. GUIPlus checks the parent first, then its nested alternatives, choosing the first item whose visibility requirements pass. See [Creating GUIs](Creating-GUIs.md).
 
-```yaml
-click-events:
-  chat-fetcher:
-    message: &eEnter an amount:
-    conditionFailMessage: &cInvalid amount!
-    conditions:
-      is-integer:
-        value: '%input%'
-      conditional-placeholder:
-        conditional_condition: '%input%>0'
-    click-events:
-      money-remove:
-        amount: '%input%'
-```
+`sorting-group` has a different purpose: items with the same group name use that group's existing slots in order, compacting visible entries into the first available group slots. It is a normal saved YAML field and can also be set in the item editor. It does not require all items to have the same slot.
 
-> **Tip:** For numeric comparisons in chat fetcher validation, use `conditional-placeholder` with the `conditional_condition` field. The `is-integer` and `is-double` conditions only validate format, not value ranges.
-
-## 🔄 Inverted Conditions
-
-Any condition can be inverted to check for the **opposite**:
-
-```yaml
-conditions:
-  has-permission:
-    permission: server.banned
-    inverted: true
-```
-
-This passes when the player does **not** have the `server.banned` permission.
-
-## 📊 Sorting Groups
-
-Sorting groups allow items to serve as fallbacks for each other. If the primary item's condition fails, the next item in the group is checked — the first item whose conditions pass is displayed. Items in the same sorting group must share the same `slot` number.
-
-> **Note:** Sorting groups are configured through the in-game editor. The `sorting-group` value is stored in the item's compressed data and is not a hand-writable YAML field. Use the in-game editor to assign items to sorting groups.
-
-**Example behavior:** If you have a VIP item and a default item in the same sorting group on slot 13, VIP players see the VIP item while non-VIP players see the default item.
+For a reusable Locked / Ready / Owned button, use [Button States](Button-States.md). Explicitly linked [Shared Components](Shared-Components.md) can supply the same requirements and actions to several menus.
 
 ---
 

@@ -1,103 +1,81 @@
 # GUIPlus
 
-*Create fully customizable GUIs for your Minecraft server — no coding required.*
+*Create and edit inventory menus directly in Minecraft.*
 
 ---
 
-GUIPlus is a powerful GUI utility plugin that allows server administrators to build complex, interactive inventory menus through simple YAML configuration. From basic server menus to advanced banking systems with conditions and multi-scene navigation, GUIPlus handles it all.
+GUIPlus lets you build server menus with an in-game editor or YAML. Add commands, conditions, animated scenes and player input, then reuse shared buttons across your menus.
 
-> **New to GUIPlus?** Start with the [Getting Started](Getting-Started.md) guide to install the plugin and create your first GUI in minutes. Or jump straight to [Tutorials](Tutorials.md) for step-by-step walkthroughs of real-world server menus.
+These pages describe **GUIPlus 4.0.0**. If you have just installed it, try `/rewards` for working Daily Rewards, Playtime Milestones and a Starter Choice. You can change the actual prizes with `/gui practical edit`.
 
 ## ✨ Key Features
 
-- 🖼 **In-Game GUI Editor** — Create and edit GUIs directly in-game with an intuitive editor interface
-- 🖱 **25 Click Event Types** — Messages, commands, economy actions, teleportation, scene navigation, and more
-- ✅ **11 Condition Types** — Control item visibility and click execution with permission checks, balance requirements, placeholders, cooldowns, and more
-- 📄 **Multi-Scene Support** — Build multi-page GUIs with independent layouts and navigation
-- 🔗 **PlaceholderAPI Integration** — Dynamic content that updates in real-time using any PAPI placeholder
-- 💬 **Chat Fetcher System** — Prompt players for input via chat, then use that input in click events
-- 💾 **Player Data Storage** — Save and retrieve per-player data fields accessible via placeholders
-- 💀 **Custom Skull Textures** — Use Base64 textures or dynamic player skins with `%self_base64%`
-- 💰 **Economy Support** — Give, remove, or set player balances with Vault integration
-- 🌐 **BungeeCord Support** — Send players to other servers in your network
-- 🔄 **DeluxeMenus Converter** — Automatically convert existing DeluxeMenus configurations
-- 📦 **4 Inventory Types** — Chest, Dispenser, Dropper, and Hopper
+| Feature | What you can do |
+|---------|-----------------|
+| [In-game editor](Creating-GUIs.md) | Create menus, copy items, change appearance and configure actions without writing YAML. |
+| [Scenes and animations](Scenes.md) | Build pages, timed sequences and animated lore. |
+| [Click events](Click-Events.md) | Run commands, give items, use an economy, open another menu or ask for player input. |
+| [Conditions](Conditions.md) | Check permissions, balances and saved values; choose which items appear and which actions can run. |
+| [Button states](Button-States.md) | Give one button Locked, Ready and Owned states with shared text values. |
+| [Interaction flows](Interaction-Flows.md) | Collect several answers, offer choices and let the player review before confirming. |
+| [Input rules](Input-Rules.md) | Accept bounded numbers, player names, enum choices and validated text. |
+| [Ready-to-use rewards](Ready-to-Use-Rewards.md) | Start with real vanilla rewards, then edit bundles and timing in game. |
+| [Shared components](Shared-Components.md) | Link buttons to one template while keeping local names and lore. |
+| [Warp catalogs](Warp-Catalogs.md) | Generate a searchable, paged menu from your EssentialsX warps. |
+| [Personal storage](Personal-Storage.md) | Give players saved item storage with permission-based sizes. |
+| [Player data](Player-Data.md) | Save per-player values for your own menus and progression. |
+| [Custom items and heads](Custom-Heads-and-Skulls.md) | Use held-item metadata, custom textures and player heads. |
+| [Integrations](Plugin-Integrations.md) | Connect menu actions to Vault, PlaceholderAPI and your other server plugins. |
 
-## 📋 Supported Versions
+## 📋 Requirements
 
-| | Requirement |
+| | GUIPlus 4.0.0 |
 |---|---|
-| **Minecraft** | 1.16+ |
-| **Server Software** | Spigot, Paper |
-| **Java** | 17+ |
+| **Server profiles** | Paper and Spigot 1.21.11; Paper 26.3 |
+| **Java** | Java 21 or newer, and the Java version required by your server. Paper 26.x requires Java 25 or newer. |
+| **Folia** | Not supported. |
+| **Default rewards** | No economy plugin, PlaceholderAPI or resource pack required. |
 
-## 🧩 Soft Dependencies
+Older GUIPlus downloads have their own requirements. Do not use an old release's Minecraft version list for the V4 JAR.
 
-| Plugin | Purpose |
-|--------|---------|
-| [Vault](https://www.spigotmc.org/resources/vault.34315/) | Economy support (give/remove/check money) |
-| [PlaceholderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) | Dynamic placeholder replacement |
-| [PlayerPoints](https://www.spigotmc.org/resources/playerpoints.80745/) | PlayerPoints currency support |
-| [HeadDatabase](https://www.spigotmc.org/resources/head-database.14280/) | Custom head retrieval |
-| [Multiverse-Core](https://www.spigotmc.org/resources/multiverse-core.390/) | Multi-world support |
+## 🧩 Optional Plugins
 
----
+| Plugin | Used for |
+|--------|----------|
+| Vault and an economy provider | Balance conditions, money actions and banking. |
+| PlaceholderAPI and the relevant expansions | Other plugins' placeholders and ordinary GUIPlus player-data display. |
+| EssentialsX | The automatic warp catalog; other Essentials commands remain Essentials-owned. |
+| PlayerPoints | Points conditions and removal actions. |
+| HeadDatabase | Selecting heads from its database. |
+| Multiverse-Core | Menus that use its worlds or commands. |
+
+Only install an integration if your menu uses it. See [Plugin Integrations](Plugin-Integrations.md) for examples.
 
 ### ⚙ Getting Started
 
 | | |
 |---|---|
-| [🚀 **Getting Started**](Getting-Started.md) | Installation, default files, first GUI tutorial |
-| [📋 **Commands & Permissions**](Commands-and-Permissions.md) | All commands and permission nodes |
-| [⚙ **Configuration**](Configuration.md) | Every config.yml option explained |
+| [🚀 Getting Started](Getting-Started.md) | Installation, first reward and first custom menu. |
+| [📋 Commands & Permissions](Commands-and-Permissions.md) | Player commands, authoring commands and access. |
+| [⚙ Configuration](Configuration.md) | Main settings, backups and refresh intervals. |
+| [🔄 Updating & Backups](Updating-and-Backups.md) | Update an existing server and keep a matching rollback copy. |
 
 ### 🎨 Creating GUIs
 
-| | |
-|---|---|
-| [🖼 **Creating GUIs**](Creating-GUIs.md) | GUI structure, inventory types, item properties |
-| [📄 **Scenes**](Scenes.md) | Multi-page GUI navigation |
-| [🖱 **Click Events**](Click-Events.md) | All 25 click event types with examples |
-| [✅ **Conditions**](Conditions.md) | All 11 condition types for visibility and validation |
+Start with [Creating GUIs](Creating-GUIs.md), then add [scenes](Scenes.md), [animations](Animations.md), [click events](Click-Events.md) and [conditions](Conditions.md). For reusable menus, see [Button States](Button-States.md) and [Shared Components](Shared-Components.md).
 
-### 💬 Interactive
+### 💬 Interactive Menus
 
-| | |
-|---|---|
-| [💬 **Chat Fetcher**](Chat-Fetcher.md) | Player input prompts and validation |
-| [💾 **Player Data**](Player-Data.md) | Per-player data storage and math operations |
-| [💀 **Custom Heads & Skulls**](Custom-Heads-and-Skulls.md) | Base64 textures and player skins |
+[Chat Fetcher](Chat-Fetcher.md) handles a single prompt. [Interaction Flows](Interaction-Flows.md) collect several answers with a review screen. Both use [Input Rules](Input-Rules.md). [Player Data](Player-Data.md) stores values you want to keep after the menu closes.
 
-### 🔌 Integrations
+### 📖 Practical Examples
 
-| | |
-|---|---|
-| [🔗 **PlaceholderAPI Placeholders**](PlaceholderAPI-Placeholders.md) | Custom placeholders and dynamic content |
-| [🌐 **BungeeCord Support**](BungeeCord-Support.md) | Cross-server navigation |
-| [🧩 **Plugin Integrations**](Plugin-Integrations.md) | Vault, LuckPerms, EssentialsX, ItemsAdder, Citizens, and more |
-| [🔄 **DeluxeMenus Converter**](DeluxeMenus-Converter.md) | Migration from DeluxeMenus |
+Try [Ready-to-Use Rewards](Ready-to-Use-Rewards.md), an [EssentialsX Warp Catalog](Warp-Catalogs.md) or [Personal Storage](Personal-Storage.md). The [Tutorials](Tutorials.md) and [Premade Configurations](Premade-Configurations.md) cover custom menus. `/gui examples` installs editable progression, unlock and choice demonstrations.
 
-### 📖 Tutorials & Resources
+### ❓ Help & Development
 
-| | |
-|---|---|
-| [📖 **Tutorials**](Tutorials.md) | Step-by-step guides for warp menus, shops, dashboards, and more |
-| [📦 **Premade Configurations**](Premade-Configurations.md) | Ready-to-use GUI templates you can drop into your server |
-| [💡 **Tips & Best Practices**](Tips-and-Best-Practices.md) | Performance tips, YAML patterns, and common pitfalls |
+[FAQ & Troubleshooting](FAQ-and-Troubleshooting.md) · [Tips & Best Practices](Tips-and-Best-Practices.md) · [Developer API](Developer-API.md)
 
-### ❓ Help & 💻 Development
+## 💬 Support
 
-| | |
-|---|---|
-| [❓ **FAQ & Troubleshooting**](FAQ-and-Troubleshooting.md) | Common questions and solutions |
-| [💻 **Developer API**](Developer-API.md) | Java API for plugin developers |
-
----
-
-## 💬 Support & Community
-
-Need help? Here's how to get support:
-
-- 💬 **Discord** — Join the plugin's Discord server for community support and announcements
-- 🐛 **Bug Reports** — Report issues through the Discord server or your purchase platform
-- 📚 **Wiki** — Browse this wiki for detailed documentation on every feature
+For help, use the plugin's Discord or your purchase platform. Include your GUIPlus version, server version and the relevant console error. For menu problems, include the smallest configuration that reproduces them.

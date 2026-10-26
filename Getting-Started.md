@@ -2,72 +2,87 @@
 
 # Getting Started
 
-*Install GUIPlus and create your first GUI menu*
+*Install GUIPlus, claim your first reward and create a menu.*
 
 ---
 
 ## 📥 Installation
 
-1. Download the latest `GUIPlus.jar` file
-2. Place it in your server's `plugins/` folder
-3. Restart your server
+1. Use a supported server: Paper or Spigot 1.21.11, or Paper 26.3.
+2. Install the Java version required by the server. GUIPlus needs Java 21 or newer; Paper 26.x needs Java 25 or newer.
+3. Place one `GUIPlus-4.0.0.jar` in `plugins/` and restart the server.
+4. Check the console for startup errors before opening a menu.
 
-> **Warning:** Always use a full server restart when installing for the first time. Do not use `/reload` as it can cause issues with plugin initialization.
+The first start may download libraries, so the server needs access to their repositories. For an existing installation, follow [Updating & Backups](Updating-and-Backups.md) first.
 
-4. The plugin will generate its default configuration files
+> **Note:** Install the plugin with a full server restart. Use `/gui reload` later for menu changes, not the server's `/reload` command.
 
-## 📂 Default Files
+## 🎁 Try the Included Rewards
 
-After first startup, GUIPlus creates the following files and folders:
+On a fresh installation, type:
 
-```
-plugins/GUIPlus/
-├── config.yml           # Main plugin configuration
-├── messages.yml         # Customizable messages
-├── playerData.yml       # Persistent player data storage
-├── cooldownData.yml     # Cooldown tracking
-└── CustomGuis/          # Your GUI configuration files
-    ├── adminpanel.yml   # Example admin panel GUI
-    └── bank.yml         # Example banking GUI
+```text
+/rewards
 ```
 
-## 🎯 Your First GUI
+Choose Daily Rewards, Playtime Milestones or Starter Choice. The first daily reward is ready immediately, and all three menus give real vanilla items without extra plugins.
 
-GUIPlus comes with two example GUIs to get you started:
+For an existing server, an administrator can add the missing menus:
 
-### Opening the Examples
-
-```
-/gui open adminpanel
-/gui open bank
+```text
+/gui practical install
 ```
 
-Or use the built-in management menu:
+Existing menu files and saved progress are kept. If another plugin already uses `/rewards`, use `/guiplus-rewards` instead.
 
+To change the actual reward items, use `/gui practical edit`. Editing a menu item's name or lore changes its appearance; it does not change the prize bundle. See [Ready-to-Use Rewards](Ready-to-Use-Rewards.md).
+
+## 📂 Files and Folders
+
+GUIPlus keeps its data in `plugins/GUIPlus/`:
+
+| File or folder | Contents |
+|----------------|----------|
+| `config.yml`, `messages.yml` | Main settings and messages. |
+| `CustomGuis/` | Your menu definitions. |
+| `SystemMenus/` | Layouts for the in-game editors. |
+| `playerData.yml`, `cooldownData.yml` | Saved player fields and cooldowns. |
+| `playerStorage/` | Personal storage, one file per player UUID. |
+| `PracticalRewards.yml` | Actual reward bundles and timing. |
+| `SharedComponents.yml` | Shared item templates and previous revisions. |
+| `WarpCatalogs.yml` | Warp catalog layouts and appearance. |
+| `backups/` | Automatic GUIPlus backups. |
+
+Some data files appear when the relevant feature is first used. Keep them with your menus when backing up the plugin.
+
+## 🖼 Create Your First Menu
+
+1. Run `/gui` as an administrator.
+2. Choose **Create GUI** and give the menu a new ID.
+3. Set its title, inventory type and rows.
+4. Open the item editor to change names, lore, actions and conditions.
+5. Save the menu with `/gui save`.
+
+You can also start from an editable authoring example:
+
+```text
+/gui examples progression my_progress
+/gui examples unlocks my_unlocks
+/gui examples choices my_choices
 ```
-/gui
-```
 
-### Using the In-Game Editor
+These are demonstrations you can adapt. The progression example does not grant a real external rank or money. The working reward menus are opened separately with `/rewards`.
 
-The fastest way to create a GUI is through the in-game editor:
+## 📝 Create a Menu with YAML
 
-1. Run `/gui` to open the GUI management menu
-2. Click to create a new GUI
-3. Set the title, type, and number of rows
-4. Place items and configure click events visually
-5. Save your GUI with `/gui save`
-
-### Creating a GUI via YAML
-
-You can also create GUIs by writing YAML files directly. Create a new `.yml` file inside the `plugins/GUIPlus/CustomGuis/` folder:
+Create `plugins/GUIPlus/CustomGuis/welcome.yml`:
 
 ```yaml
-id: mygui
-rows: 3
+id: welcome
 type: chest
-title: §6My First GUI
-commandAlias: mymenu
+rows: 3
+title: '&6Welcome'
+commandAlias: welcome
 scenes:
   '0':
     delay: 0
@@ -76,27 +91,22 @@ scenes:
         slot: 13
         item: DIAMOND
         amount: 1
-        item-name: §bHello World!
+        item-name: '&bHello!'
         item-lore:
-          - ''
-          - §7This is my first GUIPlus menu!
-          - ''
-          - §eClick me!
-        item-flags: []
-        unbreakable: false
+          - '&7Click for a welcome message.'
         click-events:
           message:
-            message: §aYou clicked the diamond!
+            message: '&aWelcome to the server!'
 ```
 
-Then reload with `/gui reload` and open it with `/gui open mygui` or `/mymenu`.
+Run `/gui reload`, then `/gui open welcome` or `/welcome`. The file name and menu ID should each be unique.
 
 ## 🚀 Next Steps
 
-- 🖼 Learn about the full [GUI structure](Creating-GUIs.md)
-- 🖱 Explore all [click events](Click-Events.md)
-- ✅ Add logic with [conditions](Conditions.md)
-- 🔗 Use dynamic content with [PlaceholderAPI](PlaceholderAPI-Placeholders.md)
+- [Creating GUIs](Creating-GUIs.md) covers item properties, colors and MiniMessage titles.
+- [Click Events](Click-Events.md) and [Conditions](Conditions.md) add behavior.
+- [Shared Components](Shared-Components.md) lets two menus use the same button.
+- [Warp Catalogs](Warp-Catalogs.md) builds a menu from your EssentialsX destinations.
 
 ---
 
